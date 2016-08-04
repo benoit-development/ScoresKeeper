@@ -3,3 +3,10 @@
 .fa img {
 	vertical-align: top;
 }
+
+/* body */
+
+body {
+  padding-top: 70px;
+  padding-bottom: 20px;
+}
