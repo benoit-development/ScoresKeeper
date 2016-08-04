@@ -3,7 +3,7 @@
 /public/storage
 Homestead.yaml
 Homestead.json
-.env*
-.settings
-.buildpath
-.project
+/.env.example
+/.settings
+/.buildpath
+/.project
