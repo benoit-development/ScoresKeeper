@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
 
     <!-- Styles -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
+    <link href="{{ url('/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url('/css/styles.css') }}" rel="stylesheet">
 
 
 </head>
@@ -39,15 +39,15 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/') }}">Home</a></li>
+                    <li><a href="{{ url('/') }}">@lang('lang.home')</a></li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
+                        <li><a href="{{ url('/login') }}">@lang('auth.login')</a></li>
+                        <li><a href="{{ url('/register') }}">@lang('auth.register')</a></li>
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -66,7 +66,7 @@
                     @endif
                 	<li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <img src="img/lang/{{ trans($current_language) }}.png" /> <span class="caret"></span>
+                            <img src="{{ url('img/lang/' . trans($current_language) . '.png') }}" /> <span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
@@ -76,7 +76,7 @@
                             			<a href="{{ url('/lang/change/' . $language) }}">
                             				@lang('lang.'.$language)
                             				<div class="pull-right">
-                            					<img src="img/lang/{{ trans($language) }}.png" />
+                            					<img src="{{ url('img/lang/' . trans($language) . '.png') }}" />
                             				</div>
                         				</a>
                     				</li>
