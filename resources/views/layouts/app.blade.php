@@ -55,7 +55,12 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
+                                <li>
+                                	<a href="{{ url('/logout') }}">
+                                		@lang('auth.logout')
+                                		<span class="fa fa-btn fa-sign-out pull-right"></span>
+                            		</a>
+                            	</li>
                             </ul>
                         </li>
                     @endif
@@ -67,7 +72,14 @@
                         <ul class="dropdown-menu" role="menu">
                         	@foreach ($available_languages as $language)
                         		@if ($language != $current_language)
-                            		<li><a href="{{ url('/lang/change/' . $language) }}"><i class="fa fa-btn"><img src="img/lang/{{ trans($language) }}.png" /></i>@lang('lang.'.$language)</a></li>
+                            		<li>
+                            			<a href="{{ url('/lang/change/' . $language) }}">
+                            				@lang('lang.'.$language)
+                            				<div class="pull-right">
+                            					<img src="img/lang/{{ trans($language) }}.png" />
+                            				</div>
+                        				</a>
+                    				</li>
                             	@endif
                             @endforeach
                         </ul>

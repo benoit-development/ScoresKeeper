@@ -1,3 +1,0 @@
-# ScoresKeeper
-Store Scores online
-
