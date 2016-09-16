@@ -17,7 +17,7 @@ class HomeController extends Controller
         if (Auth::guest()) {
             return view('welcome');
         } else {
-            return view('dashboard');
+            return view('home');
         }
     }
 }
