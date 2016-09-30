@@ -15,7 +15,7 @@ class LangController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function change($lang)
-    {echo 'lang controller <br />';
+    {
         if (in_array($lang, config('app.available_languages'))) {
             Session::set('applocale', $lang);
             Session::save();

@@ -13,5 +13,6 @@ return [
 
     'en' => 'Anglais',
     'fr' => 'Français',
+    'home' => 'Accueil',
 
 ];

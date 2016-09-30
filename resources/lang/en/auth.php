@@ -13,7 +13,18 @@ return [
     |
     */
 
-    'failed' => 'Login ou mot de passe incorrect.',
-    'throttle' => 'Trop de tentatives de connexion. Merci de réessayer dans :seconds secondes.',
+    'failed' => 'These credentials do not match our records.',
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'logout' => 'Logout',
+    'login' => 'Login',
+    'register' => 'Register',
+    'email_address' => 'E-Mail Address',
+    'password' => 'Password',
+    'remember_me' => 'Remember me',
+    'forgot_password' => 'Forgot Your Password?',
+    'name' => 'Name',
+    'confirm_password' => 'Confirm Password',
+    'send_password_reset_link' => 'Send Password Reset Link',
+    'reset_password' => 'Reset Password'
 
 ];

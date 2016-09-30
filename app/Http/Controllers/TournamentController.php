@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 
-class HomeController extends Controller
+class TournamentController extends Controller
 {
     /**
      * Create a new controller instance.
