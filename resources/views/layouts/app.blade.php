@@ -12,8 +12,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
 
     <!-- Styles -->
-    <link href="{{ url('/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ url('/css/styles.css') }}" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <!-- <link href="css/jumbotron.css" rel="stylesheet"> -->
 
 
 </head>
@@ -39,15 +40,15 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/') }}">@lang('lang.home')</a></li>
+                    <li><a href="{{ url('/') }}">Home</a></li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">@lang('auth.login')</a></li>
-                        <li><a href="{{ url('/register') }}">@lang('auth.register')</a></li>
+                        <li><a href="{{ url('/login') }}">Login</a></li>
+                        <li><a href="{{ url('/register') }}">Register</a></li>
                     @else
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -55,31 +56,19 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                <li>
-                                	<a href="{{ url('/logout') }}">
-                                		@lang('auth.logout')
-                                		<span class="fa fa-btn fa-sign-out pull-right"></span>
-                            		</a>
-                            	</li>
+                                <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
                         </li>
                     @endif
                 	<li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <img src="{{ url('img/lang/' . trans($current_language) . '.png') }}" /> <span class="caret"></span>
+                            <img src="img/lang/{{ trans($current_language) }}.png" /> <span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
                         	@foreach ($available_languages as $language)
                         		@if ($language != $current_language)
-                            		<li>
-                            			<a href="{{ url('/lang/change/' . $language) }}">
-                            				@lang('lang.'.$language)
-                            				<div class="pull-right">
-                            					<img src="{{ url('img/lang/' . trans($language) . '.png') }}" />
-                            				</div>
-                        				</a>
-                    				</li>
+                            		<li><a href="{{ url('/lang/change/' . $language) }}"><i class="fa fa-btn"><img src="img/lang/{{ trans($language) }}.png" /></i>@lang('lang.'.$language)</a></li>
                             	@endif
                             @endforeach
                         </ul>

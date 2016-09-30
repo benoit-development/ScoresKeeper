@@ -13,5 +13,8 @@ return [
 
     'your_tournaments' => 'Your Tournaments',
     'new_tournament' => 'New Tournament',
+    'add' => 'Add',
+    'label' => 'Label',
+    'type' => 'Type',
 
 ];
