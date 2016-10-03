@@ -14,6 +14,7 @@ return [
     'your_tournaments' => 'Your Tournaments',
     'new_tournament' => 'New Tournament',
     'add' => 'Add',
+    'begin' => 'Begin',
     'label' => 'Label',
     'type' => 'Type',
 

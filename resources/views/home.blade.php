@@ -48,7 +48,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-6">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-plus"></i> @lang('tournament.add')
+                            <i class="fa fa-trophy"></i> @lang('tournament.begin')
                         </button>
                     </div>
                 </div>
