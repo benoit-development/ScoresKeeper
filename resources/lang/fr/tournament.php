@@ -17,5 +17,6 @@ return [
     'begin' => 'Commencer',
     'label' => 'Libellé',
     'type' => 'Type',
+    'error_create' => 'Oups ! Quelquechose s\'est mal passé !',
 
 ];

@@ -21,9 +21,23 @@
             </div>
             
             
+            @if (count($errors) > 0)
+                <!-- Form Error List -->
+                <div class="alert alert-danger">
+                    <strong>@lang('tournament.error_create')</strong>
+            
+                    <br>
+            
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 				
             <!-- New Task Form -->
-            <?php echo Form::open(['url' => '/tournament/new', 'class' => 'form-horizontal']); ?>
+            <?php echo Form::open(['url' => '/tournament/create', 'class' => 'form-horizontal']); ?>
                 
     
                 <!-- Label -->
@@ -31,7 +45,7 @@
                 	<?php echo Form::label('label', Lang::get('tournament.label'), ['class' => 'col-sm-3 control-label']); ?>
     
                     <div class="col-sm-6">
-                    	<?php echo Form::text('label', null, ['class' => 'form-control']); ?>
+                    	<?php echo Form::text('label', null, ['class' => 'form-control', 'maxlength' => 255]); ?>
                     </div>
                 </div>
     

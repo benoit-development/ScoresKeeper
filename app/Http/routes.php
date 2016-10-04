@@ -15,5 +15,7 @@ Route::auth();
 
 Route::get('/', 'HomeController@index');
 
+Route::post('/tournament/create', 'TournamentController@create');
+
 Route::get('/lang/change/{lang}', 'LangController@change')
 ->where('lang', '[a-z]{2}');

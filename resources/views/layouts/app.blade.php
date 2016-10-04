@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <title>@lang('app.title')</title>
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
@@ -68,7 +68,7 @@
                         <ul class="dropdown-menu" role="menu">
                         	@foreach ($available_languages as $language)
                         		@if ($language != $current_language)
-                            		<li><a href="{{ url('/lang/change/' . $language) }}"><i class="fa fa-btn"><img src="img/lang/{{ trans($language) }}.png" /></i>@lang('lang.'.$language)</a></li>
+                            		<li><a href="{{ url('/lang/change/' . $language) }}">@lang('lang.'.$language) <i class="fa fa-btn pull-right"><img src="img/lang/{{ trans($language) }}.png" /></i></a></li>
                             	@endif
                             @endforeach
                         </ul>
