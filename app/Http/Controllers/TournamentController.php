@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\TournamentType;
 use Illuminate\Support\Facades\Validator;
+use App\Tournament;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Controller managing tournaments
@@ -41,6 +44,8 @@ class TournamentController extends Controller
      */
     public function create(Request $request)
     {
+        Log::info('Tournament creation requested');
+        
         $validator = Validator::make($request->all(), [
             'label' => 'required|max:255',
             'type' => 'required|integer|in:' . implode(',', array_keys(TournamentType::LIST)),
@@ -48,10 +53,37 @@ class TournamentController extends Controller
         
         if ($validator->fails()) {
             return redirect('/')
-                        ->withErrors($validator)
-                        ->withInput();
+                ->withErrors($validator)
+                ->withInput();
         }
         
-        return redirect('tournament/display/' . $id);
+        Log::debug("Tournament creation data : \nUser id : " . Auth::user()->id . "\nLabel : $request->label\nType : $request->type");
+        
+        $tournament = new Tournament();
+        $tournament->user_id = Auth::user()->id;
+        $tournament->label = $request->label;
+        $tournament->type_id = $request->type;
+        $tournament->save();
+        
+        return redirect('tournament/display/' . $tournament->id);
+    }
+    
+
+
+    /**
+     * Display an existing tournament to play it
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function display(Request $request)
+    {
+        $user = Auth::user();
+        $tournament = Tournament::where(['id' => $request->id, 'user_id' => $user->id])->first();
+        
+        if (!isset($tournament)) {
+            abort(404, 'Tournament not found');
+        }
+        
+        return view('tournament.display', ['tournament' => $tournament]);
     }
 }

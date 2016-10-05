@@ -13,9 +13,14 @@
 
 Route::auth();
 
+// home
 Route::get('/', 'HomeController@index');
 
+// for tournaments
 Route::post('/tournament/create', 'TournamentController@create');
+Route::get('/tournament/display/{id}', 'TournamentController@display')
+->where('id', '[0-9]+');
 
+// lang
 Route::get('/lang/change/{lang}', 'LangController@change')
 ->where('lang', '[a-z]{2}');
