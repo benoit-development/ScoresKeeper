@@ -5,17 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <title>@lang('app.title')</title>
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
 
     <!-- Styles -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
+    <link href="{{ url('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url('css/styles.css') }}" rel="stylesheet">
     <!-- <link href="css/jumbotron.css" rel="stylesheet"> -->
 
+	<!-- favicon -->
+	<link rel="icon" type="image/png" href="{{ url('img/favicon.png') }}" />
 
 </head>
 <body id="app-layout">
@@ -62,13 +64,13 @@
                     @endif
                 	<li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            <img src="img/lang/{{ trans($current_language) }}.png" /> <span class="caret"></span>
+                            <img src="{{ url('img/lang/' . trans($current_language) . '.png') }}" /> <span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
                         	@foreach ($available_languages as $language)
                         		@if ($language != $current_language)
-                            		<li><a href="{{ url('/lang/change/' . $language) }}"><i class="fa fa-btn"><img src="img/lang/{{ trans($language) }}.png" /></i>@lang('lang.'.$language)</a></li>
+                            		<li><a href="{{ url('/lang/change/' . $language) }}">@lang('lang.'.$language) <i class="fa fa-btn pull-right"><img src="{{ url('img/lang/' . trans($language) . '.png') }}" /></i></a></li>
                             	@endif
                             @endforeach
                         </ul>

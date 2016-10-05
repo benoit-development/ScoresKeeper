@@ -17,5 +17,6 @@ return [
     'begin' => 'Begin',
     'label' => 'Label',
     'type' => 'Type',
+    'error_create' => 'Whoops! Something went wrong!',
 
 ];

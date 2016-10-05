@@ -4,6 +4,10 @@
 	margin-top: 0.2em;
 }
 
+.dropdown-menu img {
+	vertical-align: top;
+}
+
 /* body */
 
 body {
