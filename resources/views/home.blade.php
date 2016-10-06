@@ -5,6 +5,9 @@
     <div class="row">
         <div class="col-md-12">
         
+        	<!-- Breadcrumbs -->
+        	{!! Breadcrumbs::render('home') !!}
+        
         	<!-- Created tournaments -->
             <div class="page-header">
 				<h1>
@@ -19,6 +22,7 @@
                 <!-- Table Headings -->
                 <thead>
                     <th>@lang('tournament.label')</th>
+                    <th>@lang('tournament.date')</th>
                     <th style="width: 1px">&nbsp;</th>
                     <th style="width: 1px">&nbsp;</th>
                 </thead>
@@ -27,18 +31,21 @@
                 <tbody>
                     @foreach ($tournaments as $tournament)
                         <tr>
-                            <!-- Task Name -->
                             <td class="table-text">
                             	{{ $tournament->label }}
                             </td>
-
+                            
+                            <td class="table-text">
+                            	{{ strftime("%d/%m/%Y") }}
+                            </td>
+	
                             <td>
-                                <a href="{{ url('tournament/play/' . $tournament->id) }}" type="button" class="btn btn-primary btn-sm">
-                                	<i class="fa fa-play"></i> @lang('tournament.play')
+                                <a href="{{ url('tournament/play/' . $tournament->id) }}" type="button" class="btn btn-primary">
+                                	<i class="fa fa-play-circle-o"></i> @lang('tournament.play')
                             	</a>
                         	</td>
                         	<td>
-                                <button type="button" class="btn btn-danger btn-sm">
+                                <button type="button" class="btn btn-danger">
                                 	<i class="fa fa-trash-o"></i> @lang('tournament.delete')
                             	</button>
                             </td>
@@ -51,7 +58,7 @@
             <!-- New tournament form -->
             <div class="page-header">
 				<h1>
-            	@lang('tournament.new_tournament')
+            		@lang('tournament.new_tournament')
 				</h1>
             </div>
             

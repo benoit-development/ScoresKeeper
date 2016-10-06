@@ -14,11 +14,11 @@
 Route::auth();
 
 // home
-Route::get('/', 'HomeController@index');
+Route::get('/', ['uses' => 'HomeController@index', 'as' => 'home']);
 
 // for tournaments
 Route::post('/tournament/create', 'TournamentController@create');
-Route::get('/tournament/play/{id}', 'TournamentController@play')
+Route::get('/tournament/play/{id}', ['uses' => 'TournamentController@play', 'as' => 'play'])
 ->where('id', '[0-9]+');
 
 // lang

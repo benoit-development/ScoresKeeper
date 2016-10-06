@@ -12,5 +12,6 @@ return [
     */
 
     'title' => 'Scores Keeper',
+    'home' => 'Accueil',
 
 ];
