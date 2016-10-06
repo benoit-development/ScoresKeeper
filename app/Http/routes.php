@@ -18,7 +18,7 @@ Route::get('/', 'HomeController@index');
 
 // for tournaments
 Route::post('/tournament/create', 'TournamentController@create');
-Route::get('/tournament/display/{id}', 'TournamentController@display')
+Route::get('/tournament/play/{id}', 'TournamentController@play')
 ->where('id', '[0-9]+');
 
 // lang

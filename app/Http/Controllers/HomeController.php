@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Tournament;
+use Illuminate\Support\Facades\Auth;
+
 class HomeController extends Controller
 {
     /**
@@ -21,6 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $tournaments = Tournament::orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->get();
+        
+        return view('home', ['tournaments' => $tournaments]);
     }
 }
