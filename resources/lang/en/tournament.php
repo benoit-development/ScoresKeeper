@@ -18,5 +18,7 @@ return [
     'label' => 'Label',
     'type' => 'Type',
     'error_create' => 'Whoops! Something went wrong!',
+    'play' => 'Play',
+    'delete' => 'Delete',
 
 ];

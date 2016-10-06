@@ -28,16 +28,6 @@ class TournamentController extends Controller
     }
 
     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return view('home');
-    }
-
-    /**
      * Create new tournament and begin it
      *
      * @return \Illuminate\Http\Response
@@ -65,7 +55,7 @@ class TournamentController extends Controller
         $tournament->type_id = $request->type;
         $tournament->save();
         
-        return redirect('tournament/display/' . $tournament->id);
+        return redirect('tournament/play/' . $tournament->id);
     }
     
 
@@ -75,7 +65,7 @@ class TournamentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function display(Request $request)
+    public function play(Request $request)
     {
         $user = Auth::user();
         $tournament = Tournament::where(['id' => $request->id, 'user_id' => $user->id])->first();
