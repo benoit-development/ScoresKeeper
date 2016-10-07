@@ -28,6 +28,18 @@ class TournamentController extends Controller
     }
 
     /**
+     * Show the application dashboard as home
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function home()
+    {
+        $tournaments = Tournament::orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->get();
+        
+        return view('tournament.home', ['tournaments' => $tournaments]);
+    }
+
+    /**
      * Create new tournament and begin it
      *
      * @return \Illuminate\Http\Response

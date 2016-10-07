@@ -34,8 +34,12 @@
                 </button>
 
                 <!-- Branding Image -->
+                @if (Auth::guest())
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    ScoresKeeper
+                @else
+                <a class="navbar-brand" href="{{ url('/tournament/home') }}">
+                @endif
+                    @lang('app.title')
                 </a>
             </div>
 
