@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>@lang('app.title')</title>
-
     <!-- Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
@@ -34,15 +33,19 @@
                 </button>
 
                 <!-- Branding Image -->
+                @if (Auth::guest())
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    ScoresKeeper
+                @else
+                <a class="navbar-brand" href="{{ url('/tournament/home') }}">
+                @endif
+                    @lang('app.title')
                 </a>
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/') }}">Home</a></li>
+                    <li><a href="{{ url('/') }}">@lang('app.home')</a></li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->

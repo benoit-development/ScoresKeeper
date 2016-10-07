@@ -5,6 +5,9 @@
     <div class="row">
         <div class="col-md-12">
         
+        	<!-- Breadcrumbs -->
+        	{!! Breadcrumbs::render('home') !!}
+        
         	<!-- Created tournaments -->
             <div class="page-header">
 				<h1>
@@ -19,6 +22,7 @@
                 <!-- Table Headings -->
                 <thead>
                     <th>@lang('tournament.label')</th>
+                    <th>@lang('tournament.date')</th>
                     <th style="width: 1px">&nbsp;</th>
                     <th style="width: 1px">&nbsp;</th>
                 </thead>
@@ -27,18 +31,21 @@
                 <tbody>
                     @foreach ($tournaments as $tournament)
                         <tr>
-                            <!-- Task Name -->
                             <td class="table-text">
                             	{{ $tournament->label }}
                             </td>
-
+                            
+                            <td class="table-text">
+                            	{{ strftime("%d/%m/%Y") }}
+                            </td>
+	
                             <td>
-                                <a href="{{ url('tournament/play/' . $tournament->id) }}" type="button" class="btn btn-primary btn-sm">
-                                	<i class="fa fa-play"></i> @lang('tournament.play')
+                                <a href="{{ url('tournament/play/' . $tournament->id) }}" type="button" class="btn btn-primary">
+                                	<i class="fa fa-play-circle-o"></i> @lang('tournament.play')
                             	</a>
                         	</td>
                         	<td>
-                                <button type="button" class="btn btn-danger btn-sm">
+                                <button type="button" class="btn btn-danger" onclick="showDeleteModal({{ $tournament->id }}, '{{ $tournament->label }}')">
                                 	<i class="fa fa-trash-o"></i> @lang('tournament.delete')
                             	</button>
                             </td>
@@ -51,7 +58,7 @@
             <!-- New tournament form -->
             <div class="page-header">
 				<h1>
-            	@lang('tournament.new_tournament')
+            		@lang('tournament.new_tournament')
 				</h1>
             </div>
             
@@ -71,7 +78,7 @@
                 </div>
             @endif
 				
-            <!-- New Task Form -->
+            <!-- New Tournament Form -->
             <?php echo Form::open(['url' => '/tournament/create', 'class' => 'form-horizontal']); ?>
                 
     
@@ -108,4 +115,47 @@
         </div>
     </div>
 </div>
+
+<!-- Modal dialog box for deletion -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-delete">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">&nbsp;</h4>
+      </div>
+      <div class="modal-body">
+        <p>@lang('tournament.confirm_tournament_delete')</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" id="modal-delete-button">
+        	@lang('tournament.delete')
+    	</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">
+        	@lang('tournament.cancel')
+    	</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+
+/**
+ * show modal dialog to delete a tournament 
+ */
+function showDeleteModal(tournamentId, tournamentLabel) {
+	$("#modal-delete .modal-title").text(tournamentLabel);
+
+	$("#modal-delete-button").off("click");
+	$("#modal-delete-button").on( "click", function() {
+		  alert( tournamentLabel );
+		  // AJAX to delete tournament
+	});
+	
+	$("#modal-delete").modal();
+}
+
+</script>
+
 @endsection

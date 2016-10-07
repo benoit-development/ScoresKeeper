@@ -13,6 +13,5 @@ return [
 
     'en' => 'English',
     'fr' => 'French',
-    'home' => 'Home',
 
 ];

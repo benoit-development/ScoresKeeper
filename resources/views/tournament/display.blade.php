@@ -5,6 +5,9 @@
     <div class="row">
         <div class="col-md-12">
         
+        	<!-- Breadcrumbs -->
+        	{!! Breadcrumbs::render('play', $tournament) !!}
+        
         	<!-- Tournament details -->
             <div class="page-header">
 				<h1>

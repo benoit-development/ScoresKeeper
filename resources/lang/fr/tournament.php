@@ -20,5 +20,7 @@ return [
     'error_create' => 'Oups ! Quelquechose s\'est mal passé !',
     'play' => 'Jouer',
     'delete' => 'Supprimer',
+    'cancel' => 'Annuler',
+    'confirm_tournament_delete' => 'Confirmez-vous la suppression de ce tournoi ?',
 
 ];
