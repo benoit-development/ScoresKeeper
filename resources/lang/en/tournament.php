@@ -20,5 +20,7 @@ return [
     'error_create' => 'Whoops! Something went wrong!',
     'play' => 'Play',
     'delete' => 'Delete',
+    'cancel' => 'Cancel',
+    'confirm_tournament_delete' => 'Are you sure you want to delete this tournament ?',
 
 ];

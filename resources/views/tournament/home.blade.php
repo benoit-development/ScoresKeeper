@@ -45,7 +45,7 @@
                             	</a>
                         	</td>
                         	<td>
-                                <button type="button" class="btn btn-danger">
+                                <button type="button" class="btn btn-danger" onclick="showDeleteModal({{ $tournament->id }}, '{{ $tournament->label }}')">
                                 	<i class="fa fa-trash-o"></i> @lang('tournament.delete')
                             	</button>
                             </td>
@@ -78,7 +78,7 @@
                 </div>
             @endif
 				
-            <!-- New Task Form -->
+            <!-- New Tournament Form -->
             <?php echo Form::open(['url' => '/tournament/create', 'class' => 'form-horizontal']); ?>
                 
     
@@ -115,4 +115,47 @@
         </div>
     </div>
 </div>
+
+<!-- Modal dialog box for deletion -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-delete">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">&nbsp;</h4>
+      </div>
+      <div class="modal-body">
+        <p>@lang('tournament.confirm_tournament_delete')</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" id="modal-delete-button">
+        	@lang('tournament.delete')
+    	</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">
+        	@lang('tournament.cancel')
+    	</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+
+/**
+ * show modal dialog to delete a tournament 
+ */
+function showDeleteModal(tournamentId, tournamentLabel) {
+	$("#modal-delete .modal-title").text(tournamentLabel);
+
+	$("#modal-delete-button").off("click");
+	$("#modal-delete-button").on( "click", function() {
+		  alert( tournamentLabel );
+		  // AJAX to delete tournament
+	});
+	
+	$("#modal-delete").modal();
+}
+
+</script>
+
 @endsection
