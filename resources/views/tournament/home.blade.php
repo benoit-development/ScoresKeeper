@@ -149,7 +149,7 @@ function showDeleteModal(tournamentId, tournamentLabel) {
 
 	$("#modal-delete-button").off("click");
 	$("#modal-delete-button").on( "click", function() {
-		  alert( tournamentLabel );
+		  alert( tournamentId );
 		  // AJAX to delete tournament
 	});
 	
