@@ -22,5 +22,6 @@ return [
     'delete' => 'Supprimer',
     'cancel' => 'Annuler',
     'confirm_tournament_delete' => 'Confirmez-vous la suppression de ce tournoi ?',
+    'date' => 'Date',
 
 ];
