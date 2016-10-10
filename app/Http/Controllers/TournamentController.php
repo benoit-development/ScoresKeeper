@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Tournament;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 
 /**
  * Controller managing tournaments
@@ -53,21 +54,33 @@ class TournamentController extends Controller
             'type' => 'required|integer|in:' . implode(',', array_keys(TournamentType::LIST)),
         ]);
         
+        $response = [];
+
         if ($validator->fails()) {
-            return redirect('/')
-                ->withErrors($validator)
-                ->withInput();
+
+            Log::debug("error while creatin tournament : \nInputs : " . print_r($validator->getData(), true) . "\nErrors : " . print_r($validator->errors(), true));
+            $response['errors'] = $validator->errors();
+            $response['status'] = 'error';
+            
+        } else {
+        
+            $label = Input::get('label');
+            $type = Input::get('type');
+            $userId = Auth::user()->id;
+            
+            Log::debug("Tournament creation data : \nUser id : " . $userId . "\nLabel : $label\nType : $type");
+            
+            $tournament = new Tournament();
+            $tournament->user_id = $userId;
+            $tournament->label = $label;
+            $tournament->type_id = $type;
+            $tournament->save();
+
+            $response['status'] = 'success';
+            $response['id'] = $tournament->id;
         }
         
-        Log::debug("Tournament creation data : \nUser id : " . Auth::user()->id . "\nLabel : $request->label\nType : $request->type");
-        
-        $tournament = new Tournament();
-        $tournament->user_id = Auth::user()->id;
-        $tournament->label = $request->label;
-        $tournament->type_id = $request->type;
-        $tournament->save();
-        
-        return redirect('tournament/play/' . $tournament->id);
+        return response()->json($response);
     }
     
 

@@ -63,23 +63,16 @@
             </div>
             
             
-            @if (count($errors) > 0)
-                <!-- Form Error List -->
-                <div class="alert alert-danger">
-                    <strong>@lang('tournament.error_create')</strong>
-            
-                    <br>
-            
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            <!-- Form Error List -->
+            <div class="alert alert-danger hidden" id="newTournamentFormErrors">
+                <strong>@lang('tournament.error_create')</strong>
+                <br>
+                <ul>
+                </ul>
+            </div>
 				
             <!-- New Tournament Form -->
-            <?php echo Form::open(['url' => '/tournament/create', 'class' => 'form-horizontal']); ?>
+            <?php echo Form::open(['class' => 'form-horizontal', 'id' => 'newTournamentForm']); ?>
                 
     
                 <!-- Label -->
@@ -111,6 +104,44 @@
                 
                 
             <?php echo Form::close(); ?>
+            
+            <script type="text/javascript">
+
+            	$(document).ready(function() {
+                	// Set submit function to create new tournament
+                    $("#newTournamentForm").submit(function(event){
+                        // cancels the form submission
+                        event.preventDefault();
+                        // Ajax call
+                        $.ajax({
+                            type: "POST",
+                            url: "{{ url('tournament/create') }}",
+                            dataType : 'json',
+                            data: $("#newTournamentForm").serialize(),
+                            success: function(json) {
+                                if (json.status == "success") {
+                                    // tournmanet successfully created
+                                	window.location.replace("{{ url('tournament/play') }}/" + json.id);
+                                } else {
+                                    // error occured
+                                    var ul = $("#newTournamentFormErrors ul");
+                                    ul.empty();
+                                	$.each(json.errors, function(key, data) {
+                                    	ul.append($("<li>").text(data));
+                                	});
+                                    $("#newTournamentFormErrors").removeClass("hidden");
+                                }
+                            },
+                            error: function(xhr, ajaxOptions, thrownError) {
+                                // error occured
+                                var ul = $("#newTournamentFormErrors ul");
+                                ul.empty();
+                            }
+                        });
+                    });
+            	});
+                
+            </script>
             
         </div>
     </div>
