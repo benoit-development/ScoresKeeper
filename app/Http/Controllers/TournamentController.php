@@ -35,9 +35,24 @@ class TournamentController extends Controller
      */
     public function home()
     {
-        $tournaments = Tournament::orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->get();
+        return view('tournament.home');
+    }
+    
+    /**
+     * Retrieve in json a pagined list of user's tournaments
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function list()
+    {
+        $tournaments = Tournament::orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->paginate(2);
         
-        return view('tournament.home', ['tournaments' => $tournaments]);
+        $result = [];
+        foreach ($tournaments as $tournament) {
+            $result[] = $tournament->toArray();
+        }
+
+        return response()->json($tournaments->toArray());
     }
 
     /**
