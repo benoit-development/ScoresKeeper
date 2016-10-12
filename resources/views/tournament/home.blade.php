@@ -89,50 +89,32 @@
             	@lang('tournament.no_tournament_created')
             </p>
             
-            <table class="table table-striped table-hover hidden" id="tournamentList">
-
-                <!-- Table Headings -->
-                <thead>
-                    <th>@lang('tournament.label')</th>
-                    <th>@lang('tournament.date')</th>
-                    <th style="width: 1px">&nbsp;</th>
-                    <th style="width: 1px">&nbsp;</th>
-                </thead>
-
-                <!-- Table Body -->
-                <tbody>
-                    <!-- 
-                        <tr>
-                            <td class="table-text">
-                            	LABEL
-                            </td>
-                            
-                            <td class="table-text">
-                            	DATE
-                            </td>
-	
-                            <td>
-                                <a href="{{ url('tournament/play/') }}ID" type="button" class="btn btn-primary">
-                                	<i class="fa fa-play-circle-o"></i> @lang('tournament.play')
-                            	</a>
-                        	</td>
-                        	<td>
-                                <button type="button" class="btn btn-danger" onclick="showDeleteModal('ID', 'LABEL')">
-                                	<i class="fa fa-trash-o"></i> @lang('tournament.delete')
-                            	</button>
-                            </td>
-                        </tr>
-                     -->
-                </tbody>
-            </table>
+            <div id="tournamentList" class="hidden">
             
-            
-            
-            
-            
-            
-            
-            
+                <nav aria-label="pagination">
+                    <ul class="pagination">
+                        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&raquo;</span></a></li>
+                    </ul>
+                </nav>
+                
+                <table class="table table-striped table-hover">
+    
+                    <!-- Table Headings -->
+                    <thead>
+                        <th>@lang('tournament.label')</th>
+                        <th>@lang('tournament.date')</th>
+                        <th style="width: 1px">&nbsp;</th>
+                        <th style="width: 1px">&nbsp;</th>
+                    </thead>
+    
+                    <!-- Table Body -->
+                    <tbody>
+                    </tbody>
+                </table>
+                
+            </div>
             
         </div>
     </div>
@@ -277,6 +259,37 @@ function updateTournamentList(page = 1) {
             	$("#tournamentList").addClass("hidden");
             } else {
                 // json retrieved correctly
+                
+                //pagination
+            	var pagination = $("#tournamentList").find('ul');
+            	pagination.empty();
+
+				pagination.append($('<li>')
+					.attr('class', 'disabled')
+					.append($('<a>')
+						.attr('href', json.prev_page_url)
+						.attr('aria-label', '{{ trans('tournament.previous') }}')
+						.append($('<span>')
+							.attr('aria-hidden', 'true')
+							.text('«')
+						)
+					)
+				);
+
+				pagination.append($('<li>')
+					.attr('class', 'disabled')
+					.append($('<a>')
+						.attr('href', json.next_page_url)
+						.attr('aria-label', '{{ trans('tournament.next') }}')
+						.append($('<span>')
+							.attr('aria-hidden', 'true')
+							.text('«')
+						)
+					)
+				);
+
+
+            	//tournament list table
             	var body = $("#tournamentList").find('tbody');
             	body.empty();
                 $.each(json.data, function(key, data) {
