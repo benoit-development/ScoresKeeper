@@ -14,4 +14,15 @@ class Tournament extends Model
      */
     protected $hidden = ['user_id'];
     
+    /**
+     * 
+     * {@inheritDoc}
+     * @see \Illuminate\Database\Eloquent\Model::toArray()
+     */
+    function toArray() {
+        $result = parent::toArray();
+        $result['date'] = strftime('%d/%m/%Y', $this->created_at->getTimeStamp());
+        
+        return $result;
+    }
 }

@@ -47,12 +47,12 @@ class TournamentController extends Controller
     {
         $tournaments = Tournament::orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->paginate(2);
         
-        $result = [];
-        foreach ($tournaments as $tournament) {
-            $result[] = $tournament->toArray();
-        }
+//         $result = [];
+//         foreach ($tournaments as $tournament) {
+//             $result[] = $tournament->formatToArray();
+//         }
 
-        return response()->json($tournaments->toArray());
+        return response()->json($tournaments);
     }
 
     /**

@@ -78,7 +78,7 @@
             
             
             <!-- Error retrieving tournmanent list -->
-            <div class="alert alert-danger hidden" id="newTournamentFormErrors">
+            <div class="alert alert-danger hidden" id=tournamentListError>
                 <strong>@lang('tournament.error_get_your_tournaments')</strong>
             </div>
             
@@ -201,6 +201,8 @@ $(document).ready(function() {
  * Create a new tournament using ajax method
  */
 function createTournament() {
+
+	// ajax call for tournament creation
 	$.ajax({
         type: "POST",
         url: "{{ url('tournament/create') }}",
@@ -254,19 +256,63 @@ function showDeleteModal(tournamentId, tournamentLabel) {
  * @param page page to display, default=1
  */
 function updateTournamentList(page = 1) {
-	// Ajax call
+	// displaying loading icon
+	$("#tournamentListError").addClass("hidden");
+	$("#tournamentListLoading").removeClass("hidden");
+	$("#noTournament").addClass("hidden");
+	$("#tournamentList").addClass("hidden");
+	
+	// Ajax call for tournament list
     $.ajax({
         type: "GET",
         url: "{{ url('tournament/list') }}",
         dataType : 'json',
         data: {page : page},
         success: function(json) {
-            // json retrieved correctly
-            
+        	$("#tournamentListError").addClass("hidden");
+        	$("#tournamentListLoading").addClass("hidden");
+            if (json.length == 0) {
+            	// displaying loading icon
+            	$("#noTournament").removeClass("hidden");
+            	$("#tournamentList").addClass("hidden");
+            } else {
+                // json retrieved correctly
+            	var body = $("#tournamentList").find('tbody');
+            	body.empty();
+                $.each(json.data, function(key, data) {
+                    body.append($('<tr>')
+                        .append($('<td>')
+                            .text(data.label)
+                        ).append($('<td>')
+                            .text(data.date)
+                        ).append($('<td>')
+                            .append($('<a>')
+                                .attr('href', '{{ url('tournament/play/') }}/' + data.id)
+                                .attr('class', 'btn btn-primary')
+                                .attr('type', 'button')
+                                .append($('<i>').attr('class', 'fa fa-play-circle-o').append(' @lang('tournament.play')'))
+                            )       
+                        ).append($('<td>')
+                            .append($('<button>')
+                                .click(function () {showDeleteModal(data.id, data.label)})
+                                .attr('class', 'btn btn-danger')
+                                .attr('type', 'button')
+                                .append($('<i>').attr('class', 'fa fa-trash-o').append(' @lang('tournament.delete')'))
+                            )       
+                        )
+                    );
+                });
+            	// displaying loading icon
+            	$("#noTournament").addClass("hidden");
+            	$("#tournamentList").removeClass("hidden");
+            }
         },
         error: function(xhr, ajaxOptions, thrownError) {
             // error occured
-            
+        	$("#tournamentListError").removeClass("hidden");
+        	$("#tournamentListLoading").addClass("hidden");
+        	$("#noTournament").addClass("hidden");
+        	$("#tournamentList").addClass("hidden");
         }
     });
 }
