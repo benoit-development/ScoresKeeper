@@ -23,9 +23,13 @@ return [
     'cancel' => 'Annuler',
     'confirm_tournament_delete' => 'Confirmez-vous la suppression de ce tournoi ?',
     'date' => 'Date',
-    'no_tournament_created' => 'Vous n\'avez pas encore créé de tournoi',
+    'no_tournament_created' => 'Vous n\'avez pas créé de tournoi',
     'error_get_your_tournaments' => 'Une erreur est survenue lors de la récupration de vos tournois. Merci de réessayer plus tard.',
     'previous' => 'Précédent',
     'next' => 'Suivant',
+    'deletion_success' => 'Tournoi correctement supprimé',
+    'deletion_error' => 'Une erreur est survenue lors de la suppression du tournoi',
+    'deleting_tournament' => 'Suppression d\'un tournoi',
+    'ok' => 'OK',
 
 ];

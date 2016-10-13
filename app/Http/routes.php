@@ -21,6 +21,8 @@ Route::get('/tournament/home', ['uses' => 'TournamentController@home', 'as' => '
 Route::post('/tournament/create', 'TournamentController@create');
 Route::get('/tournament/play/{id}', ['uses' => 'TournamentController@play', 'as' => 'play'])
 ->where('id', '[0-9]+');
+Route::get('/tournament/delete/{id}', ['uses' => 'TournamentController@delete', 'as' => 'delete'])
+->where('id', '[0-9]+');
 Route::get('/tournament/list', ['uses' => 'TournamentController@list', 'as' => 'list']);
 
 // lang

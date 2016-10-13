@@ -148,6 +148,25 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-delete-result">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">@lang('tournament.deleting_tournament')</h4>
+      </div>
+      <div class="modal-body">
+        <p>&nbsp;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">
+        	@lang('tournament.ok')
+    	</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 
 
@@ -229,8 +248,25 @@ function showDeleteModal(tournamentId, tournamentLabel) {
 
 	$("#modal-delete-button").off("click");
 	$("#modal-delete-button").on( "click", function() {
-		  alert( tournamentId );
-		  // AJAX to delete tournament
+		$.ajax({
+            type: "GET",
+            url: "{{ url('tournament/delete') }}/" + tournamentId,
+            dataType : 'json',
+            success: function(json) {
+                if (json == 'success') {
+                    updateTournamentList();
+                    $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_success')");
+                } else {
+                    $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_error')");
+                }
+            },
+            error: function(json) {
+                $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_error')");
+            },
+            complete: function(json) {
+                $("#modal-delete-result").modal();
+            }
+		});
 	});
 	
 	$("#modal-delete").modal();
@@ -277,7 +313,7 @@ function updateTournamentList(page = 1) {
                 	//Previous
                 	var li = $('<li>')
     				.append($('<span>')
-    					.attr('aria-label', '{{ trans('tournament.previous') }}')
+    					.attr('aria-label', '@lang('tournament.previous')')
     					.append($('<span>')
     						.attr('aria-hidden', 'true')
     						.text('«')
@@ -296,7 +332,7 @@ function updateTournamentList(page = 1) {
     				for (let i=1; i<=json.last_page; i++) {
     	            	var li = $('<li>')
     					.append($('<span>')
-    						.attr('aria-label', '{{ trans('tournament.page') }}')
+    						.attr('aria-label', '@lang('tournament.page')')
     						.append($('<span>')
     							.attr('aria-hidden', 'true')
     							.text(i)
@@ -314,7 +350,7 @@ function updateTournamentList(page = 1) {
                 	//Next
                 	var li = $('<li>')
     				.append($('<span>')
-    					.attr('aria-label', '{{ trans('tournament.next') }}')
+    					.attr('aria-label', '@lang('tournament.next')')
     					.append($('<span>')
     						.attr('aria-hidden', 'true')
     						.text('»')
@@ -343,7 +379,7 @@ function updateTournamentList(page = 1) {
                             .text(data.date)
                         ).append($('<td>')
                             .append($('<a>')
-                                .attr('href', '{{ url('tournament/play/') }}/' + data.id)
+                                .attr('href', '{!! addslashes(url('tournament/play/')) !!}/' + data.id)
                                 .attr('class', 'btn btn-primary')
                                 .attr('type', 'button')
                                 .append($('<i>').attr('class', 'fa fa-play-circle-o').append(' @lang('tournament.play')'))

@@ -111,4 +111,17 @@ class TournamentController extends Controller
         
         return view('tournament.display', ['tournament' => $tournament]);
     }
+    
+    
+    /**
+     * Tournment deletion for ajax call (json response)
+     * 
+     * @param Request $request
+     */
+    public function delete(Request $request) {
+        $user = Auth::user();
+        $result = Tournament::where(['id' => $request->id, 'user_id' => $user->id])->delete();
+        
+        return response()->json((($result > 0)?'success':'error'));
+    }
 }

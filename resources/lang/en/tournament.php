@@ -23,9 +23,13 @@ return [
     'cancel' => 'Cancel',
     'confirm_tournament_delete' => 'Are you sure you want to delete this tournament ?',
     'date' => 'Date',
-    'no_tournament_created' => 'No tournament created yet',
+    'no_tournament_created' => 'No tournament created',
     'error_get_your_tournaments' => 'An error occured while retrieving your tournaments, please try again later.',
     'previous' => 'Previous',
     'next' => 'Next',
+    'deletion_success' => 'Tournament removal successfully performed',
+    'deletion_error' => 'Tournament removal achieved with error',
+    'deleting_tournament' => 'Tournament removal',
+    'ok' => 'OK',
 
 ];
