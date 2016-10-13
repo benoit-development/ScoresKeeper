@@ -8,54 +8,11 @@
         	<!-- Breadcrumbs -->
         	{!! Breadcrumbs::render('home') !!}
         
-        	<!-- Created tournaments -->
-            <div class="page-header">
-				<h1>
-					@lang('tournament.your_tournaments')
-					<small>[{{ count($tournaments) }}]</small>
-				</h1>
-            </div>
+        
+        
             
             
-            <table class="table table-striped table-hover">
-
-                <!-- Table Headings -->
-                <thead>
-                    <th>@lang('tournament.label')</th>
-                    <th>@lang('tournament.date')</th>
-                    <th style="width: 1px">&nbsp;</th>
-                    <th style="width: 1px">&nbsp;</th>
-                </thead>
-
-                <!-- Table Body -->
-                <tbody>
-                    @foreach ($tournaments as $tournament)
-                        <tr>
-                            <td class="table-text">
-                            	{{ $tournament->label }}
-                            </td>
-                            
-                            <td class="table-text">
-                            	{{ strftime("%d/%m/%Y") }}
-                            </td>
-	
-                            <td>
-                                <a href="{{ url('tournament/play/' . $tournament->id) }}" type="button" class="btn btn-primary">
-                                	<i class="fa fa-play-circle-o"></i> @lang('tournament.play')
-                            	</a>
-                        	</td>
-                        	<td>
-                                <button type="button" class="btn btn-danger" onclick="showDeleteModal({{ $tournament->id }}, '{{ $tournament->label }}')">
-                                	<i class="fa fa-trash-o"></i> @lang('tournament.delete')
-                            	</button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            
-            
-            <!-- New tournament form -->
+            <!-- New tournament form section -->
             <div class="page-header">
 				<h1>
             		@lang('tournament.new_tournament')
@@ -70,7 +27,8 @@
                 <ul>
                 </ul>
             </div>
-				
+            
+            
             <!-- New Tournament Form -->
             <?php echo Form::open(['class' => 'form-horizontal', 'id' => 'newTournamentForm']); ?>
                 
@@ -105,43 +63,58 @@
                 
             <?php echo Form::close(); ?>
             
-            <script type="text/javascript">
+            
+            
+            
+            
 
-            	$(document).ready(function() {
-                	// Set submit function to create new tournament
-                    $("#newTournamentForm").submit(function(event){
-                        // cancels the form submission
-                        event.preventDefault();
-                        // Ajax call
-                        $.ajax({
-                            type: "POST",
-                            url: "{{ url('tournament/create') }}",
-                            dataType : 'json',
-                            data: $("#newTournamentForm").serialize(),
-                            success: function(json) {
-                                if (json.status == "success") {
-                                    // tournmanet successfully created
-                                	window.location.replace("{{ url('tournament/play') }}/" + json.id);
-                                } else {
-                                    // error occured
-                                    var ul = $("#newTournamentFormErrors ul");
-                                    ul.empty();
-                                	$.each(json.errors, function(key, data) {
-                                    	ul.append($("<li>").text(data));
-                                	});
-                                    $("#newTournamentFormErrors").removeClass("hidden");
-                                }
-                            },
-                            error: function(xhr, ajaxOptions, thrownError) {
-                                // error occured
-                                var ul = $("#newTournamentFormErrors ul");
-                                ul.empty();
-                            }
-                        });
-                    });
-            	});
+
+        	<!-- Created tournaments -->
+            <div class="page-header">
+				<h1>
+					@lang('tournament.your_tournaments')
+				</h1>
+            </div>
+            
+            
+            <!-- Error retrieving tournmanent list -->
+            <div class="alert alert-danger hidden" id=tournamentListError>
+                <strong>@lang('tournament.error_get_your_tournaments')</strong>
+            </div>
+            
+            
+            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw center-block text-primary" id="tournamentListLoading"></i>
+            
+            <p class="text-center hidden" id="noTournament">
+            	@lang('tournament.no_tournament_created')
+            </p>
+            
+            <div id="tournamentList" class="hidden">
+            
+                <nav aria-label="pagination" class="text-center">
+                    <ul class="pagination">
+                        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+                        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&raquo;</span></a></li>
+                    </ul>
+                </nav>
                 
-            </script>
+                <table class="table table-striped table-hover">
+    
+                    <!-- Table Headings -->
+                    <thead>
+                        <th>@lang('tournament.label')</th>
+                        <th>@lang('tournament.date')</th>
+                        <th style="width: 1px">&nbsp;</th>
+                        <th style="width: 1px">&nbsp;</th>
+                    </thead>
+    
+                    <!-- Table Body -->
+                    <tbody>
+                    </tbody>
+                </table>
+                
+            </div>
             
         </div>
     </div>
@@ -170,10 +143,81 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
+
+
+
+
+
+
+
+
+
 <script type="text/javascript">
 
+
+
 /**
- * show modal dialog to delete a tournament 
+ * Page initialisation
+ */
+$(document).ready(function() {
+
+
+	
+	// Set submit function to create new tournament
+    $("#newTournamentForm").submit(function(event){
+        // cancels the form submission
+        event.preventDefault();
+        // Ajax call to create a new tournament
+        createTournament();
+    });
+
+
+	// display first page of tournaments
+	updateTournamentList();
+    
+});
+
+
+/**
+ * Create a new tournament using ajax method
+ */
+function createTournament() {
+
+	// ajax call for tournament creation
+	$.ajax({
+        type: "POST",
+        url: "{{ url('tournament/create') }}",
+        dataType : 'json',
+        data: $("#newTournamentForm").serialize(),
+        success: function(json) {
+            if (json.status == "success") {
+                // tournmanet successfully created
+            	window.location.replace("{{ url('tournament/play') }}/" + json.id);
+            } else {
+                // error occured
+                var ul = $("#newTournamentFormErrors ul");
+                ul.empty();
+            	$.each(json.errors, function(key, data) {
+                	ul.append($("<li>").text(data));
+            	});
+                $("#newTournamentFormErrors").removeClass("hidden");
+            }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            // error occured
+            var ul = $("#newTournamentFormErrors ul");
+            ul.empty();
+        }
+    });
+}
+
+
+/**
+ * show modal dialog to delete a tournament
+ *
+ * @param tournamentId
+ * @param tournamentLabel 
  */
 function showDeleteModal(tournamentId, tournamentLabel) {
 	$("#modal-delete .modal-title").text(tournamentLabel);
@@ -185,6 +229,135 @@ function showDeleteModal(tournamentId, tournamentLabel) {
 	});
 	
 	$("#modal-delete").modal();
+}
+
+
+/**
+ * Update tournament pagination to a page
+ *
+ * @param page page to display, default=1
+ */
+function updateTournamentList(page = 1) {
+	// displaying loading icon
+	$("#tournamentListError").addClass("hidden");
+	$("#tournamentListLoading").removeClass("hidden");
+	$("#noTournament").addClass("hidden");
+	$("#tournamentList").addClass("hidden");
+	
+	// Ajax call for tournament list
+    $.ajax({
+        type: "GET",
+        url: "{{ url('tournament/list') }}",
+        dataType : 'json',
+        data: {page : page},
+        success: function(json) {
+        	$("#tournamentListError").addClass("hidden");
+        	$("#tournamentListLoading").addClass("hidden");
+            if (json.length == 0) {
+            	// displaying loading icon
+            	$("#noTournament").removeClass("hidden");
+            	$("#tournamentList").addClass("hidden");
+            } else {
+                // json retrieved correctly
+                
+                //pagination
+            	var pagination = $("#tournamentList").find('ul');
+            	pagination.empty();
+
+            	//Previous
+            	var li = $('<li>')
+				.append($('<span>')
+					.attr('aria-label', '{{ trans('tournament.previous') }}')
+					.append($('<span>')
+						.attr('aria-hidden', 'true')
+						.text('«')
+					)
+				);
+            	if (json.current_page == 1) {
+					li.attr('class', 'disabled')
+            	} else {
+                	li.click(function(){ updateTournamentList(json.current_page - 1); });
+                	li.attr('style', 'cursor: pointer;');
+            	}
+				pagination.append(li);
+
+				//pages
+				var i;
+				for (let i=1; i<=json.last_page; i++) {
+	            	var li = $('<li>')
+					.append($('<span>')
+						.attr('aria-label', '{{ trans('tournament.page') }}')
+						.append($('<span>')
+							.attr('aria-hidden', 'true')
+							.text(i)
+						)
+					);
+	            	if (json.current_page == i) {
+						li.attr('class', 'disabled')
+	            	} else {
+	                	li.click(function(){ updateTournamentList(i); });
+	                	li.attr('style', 'cursor: pointer;');
+	            	}
+					pagination.append(li);
+				}
+
+            	//Next
+            	var li = $('<li>')
+				.append($('<span>')
+					.attr('aria-label', '{{ trans('tournament.next') }}')
+					.append($('<span>')
+						.attr('aria-hidden', 'true')
+						.text('»')
+					)
+				);
+            	if (json.current_page == json.last_page) {
+					li.attr('class', 'disabled')
+            	} else {
+                	li.click(function(){ updateTournamentList(json.current_page + 1); });
+                	li.attr('style', 'cursor: pointer;');
+            	}
+				pagination.append(li);
+
+				
+            	//tournament list table
+            	var body = $("#tournamentList").find('tbody');
+            	body.empty();
+                $.each(json.data, function(key, data) {
+                    body.append($('<tr>')
+                        .append($('<td>')
+                            .text(data.label)
+                        ).append($('<td>')
+                            .text(data.date)
+                        ).append($('<td>')
+                            .append($('<a>')
+                                .attr('href', '{{ url('tournament/play/') }}/' + data.id)
+                                .attr('class', 'btn btn-primary')
+                                .attr('type', 'button')
+                                .append($('<i>').attr('class', 'fa fa-play-circle-o').append(' @lang('tournament.play')'))
+                            )       
+                        ).append($('<td>')
+                            .append($('<button>')
+                                .click(function () {showDeleteModal(data.id, data.label)})
+                                .attr('class', 'btn btn-danger')
+                                .attr('type', 'button')
+                                .append($('<i>').attr('class', 'fa fa-trash-o').append(' @lang('tournament.delete')'))
+                            )       
+                        )
+                    );
+                });
+            	// displaying loading icon
+            	$("#noTournament").addClass("hidden");
+            	$("#tournamentList").removeClass("hidden");
+            }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            // error occured
+        	$("#tournamentListError").removeClass("hidden");
+        	$("#tournamentListLoading").addClass("hidden");
+        	$("#noTournament").addClass("hidden");
+        	$("#tournamentList").addClass("hidden");
+        }
+    });
 }
 
 </script>
