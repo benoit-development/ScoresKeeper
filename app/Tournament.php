@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Tournament extends Model
 {
@@ -19,10 +20,19 @@ class Tournament extends Model
      * {@inheritDoc}
      * @see \Illuminate\Database\Eloquent\Model::toArray()
      */
-    function toArray() {
+    public function toArray() {
         $result = parent::toArray();
         $result['date'] = strftime('%d/%m/%Y', $this->created_at->getTimeStamp());
         
         return $result;
+    }
+    
+    /**
+     * Get paginated list of tournaments
+     * 
+     * return Iterator
+     */
+    public static function getPaginatedList() {
+        return self::orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->paginate(10);
     }
 }

@@ -45,12 +45,7 @@ class TournamentController extends Controller
      */
     public function list()
     {
-        $tournaments = Tournament::orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->paginate(2);
-        
-//         $result = [];
-//         foreach ($tournaments as $tournament) {
-//             $result[] = $tournament->formatToArray();
-//         }
+        $tournaments = Tournament::getPaginatedList();
 
         return response()->json($tournaments);
     }
@@ -115,5 +110,18 @@ class TournamentController extends Controller
         }
         
         return view('tournament.display', ['tournament' => $tournament]);
+    }
+    
+    
+    /**
+     * Tournment deletion for ajax call (json response)
+     * 
+     * @param Request $request
+     */
+    public function delete(Request $request) {
+        $user = Auth::user();
+        $result = Tournament::where(['id' => $request->id, 'user_id' => $user->id])->delete();
+        
+        return response()->json((($result > 0)?'success':'error'));
     }
 }
