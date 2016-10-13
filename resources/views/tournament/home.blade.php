@@ -83,15 +83,20 @@
             </div>
             
             
+            <!-- Loadin icon -->
             <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw center-block text-primary" id="tournamentListLoading"></i>
             
+            
+            <!-- No tournament -->
             <p class="text-center hidden" id="noTournament">
             	@lang('tournament.no_tournament_created')
             </p>
             
+            
+            <!-- Tournament table and pagination -->
             <div id="tournamentList" class="hidden">
             
-                <nav aria-label="pagination" class="text-center">
+                <nav aria-label="pagination" class="text-center" id="tournamentPagination">
                     <ul class="pagination">
                         <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
                         <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
@@ -253,7 +258,7 @@ function updateTournamentList(page = 1) {
         success: function(json) {
         	$("#tournamentListError").addClass("hidden");
         	$("#tournamentListLoading").addClass("hidden");
-            if (json.length == 0) {
+            if (json.last_page == 0) {
             	// displaying loading icon
             	$("#noTournament").removeClass("hidden");
             	$("#tournamentList").addClass("hidden");
@@ -261,62 +266,70 @@ function updateTournamentList(page = 1) {
                 // json retrieved correctly
                 
                 //pagination
-            	var pagination = $("#tournamentList").find('ul');
-            	pagination.empty();
-
-            	//Previous
-            	var li = $('<li>')
-				.append($('<span>')
-					.attr('aria-label', '{{ trans('tournament.previous') }}')
-					.append($('<span>')
-						.attr('aria-hidden', 'true')
-						.text('«')
-					)
-				);
-            	if (json.current_page == 1) {
-					li.attr('class', 'disabled')
+                
+            	if (json.last_page == 1) {
+            		$("#tournamentPagination").addClass("hidden");
             	} else {
-                	li.click(function(){ updateTournamentList(json.current_page - 1); });
-                	li.attr('style', 'cursor: pointer;');
-            	}
-				pagination.append(li);
+                	
+                	var pagination = $("#tournamentList").find('ul');
+                	pagination.empty();
+    
+                	//Previous
+                	var li = $('<li>')
+    				.append($('<span>')
+    					.attr('aria-label', '{{ trans('tournament.previous') }}')
+    					.append($('<span>')
+    						.attr('aria-hidden', 'true')
+    						.text('«')
+    					)
+    				);
+                	if (json.current_page == 1) {
+    					li.attr('class', 'disabled')
+                	} else {
+                    	li.click(function(){ updateTournamentList(json.current_page - 1); });
+                    	li.attr('style', 'cursor: pointer;');
+                	}
+    				pagination.append(li);
+    
+    				//pages
+    				var i;
+    				for (let i=1; i<=json.last_page; i++) {
+    	            	var li = $('<li>')
+    					.append($('<span>')
+    						.attr('aria-label', '{{ trans('tournament.page') }}')
+    						.append($('<span>')
+    							.attr('aria-hidden', 'true')
+    							.text(i)
+    						)
+    					);
+    	            	if (json.current_page == i) {
+    						li.attr('class', 'disabled')
+    	            	} else {
+    	                	li.click(function(){ updateTournamentList(i); });
+    	                	li.attr('style', 'cursor: pointer;');
+    	            	}
+    					pagination.append(li);
+    				}
+    
+                	//Next
+                	var li = $('<li>')
+    				.append($('<span>')
+    					.attr('aria-label', '{{ trans('tournament.next') }}')
+    					.append($('<span>')
+    						.attr('aria-hidden', 'true')
+    						.text('»')
+    					)
+    				);
+                	if (json.current_page == json.last_page) {
+    					li.attr('class', 'disabled')
+                	} else {
+                    	li.click(function(){ updateTournamentList(json.current_page + 1); });
+                    	li.attr('style', 'cursor: pointer;');
+                	}
+    				pagination.append(li);
 
-				//pages
-				var i;
-				for (let i=1; i<=json.last_page; i++) {
-	            	var li = $('<li>')
-					.append($('<span>')
-						.attr('aria-label', '{{ trans('tournament.page') }}')
-						.append($('<span>')
-							.attr('aria-hidden', 'true')
-							.text(i)
-						)
-					);
-	            	if (json.current_page == i) {
-						li.attr('class', 'disabled')
-	            	} else {
-	                	li.click(function(){ updateTournamentList(i); });
-	                	li.attr('style', 'cursor: pointer;');
-	            	}
-					pagination.append(li);
-				}
-
-            	//Next
-            	var li = $('<li>')
-				.append($('<span>')
-					.attr('aria-label', '{{ trans('tournament.next') }}')
-					.append($('<span>')
-						.attr('aria-hidden', 'true')
-						.text('»')
-					)
-				);
-            	if (json.current_page == json.last_page) {
-					li.attr('class', 'disabled')
-            	} else {
-                	li.click(function(){ updateTournamentList(json.current_page + 1); });
-                	li.attr('style', 'cursor: pointer;');
+            		$("#tournamentPagination").removeClass("hidden");
             	}
-				pagination.append(li);
 
 				
             	//tournament list table
@@ -345,7 +358,8 @@ function updateTournamentList(page = 1) {
                         )
                     );
                 });
-            	// displaying loading icon
+                
+            	// displaying tournament list
             	$("#noTournament").addClass("hidden");
             	$("#tournamentList").removeClass("hidden");
             }
