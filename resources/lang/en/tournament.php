@@ -25,5 +25,7 @@ return [
     'date' => 'Date',
     'no_tournament_created' => 'No tournament created yet',
     'error_get_your_tournaments' => 'An error occured while retrieving your tournaments, please try again later.',
+    'previous' => 'Previous',
+    'next' => 'Next',
 
 ];

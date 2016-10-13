@@ -25,5 +25,7 @@ return [
     'date' => 'Date',
     'no_tournament_created' => 'Vous n\'avez pas encore créé de tournoi',
     'error_get_your_tournaments' => 'Une erreur est survenue lors de la récupration de vos tournois. Merci de réessayer plus tard.',
+    'previous' => 'Précédent',
+    'next' => 'Suivant',
 
 ];
