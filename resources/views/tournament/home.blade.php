@@ -91,7 +91,7 @@
             
             <div id="tournamentList" class="hidden">
             
-                <nav aria-label="pagination">
+                <nav aria-label="pagination" class="text-center">
                     <ul class="pagination">
                         <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
                         <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
@@ -264,31 +264,61 @@ function updateTournamentList(page = 1) {
             	var pagination = $("#tournamentList").find('ul');
             	pagination.empty();
 
-				pagination.append($('<li>')
-					.attr('class', 'disabled')
-					.append($('<a>')
-						.attr('href', json.prev_page_url)
-						.attr('aria-label', '{{ trans('tournament.previous') }}')
-						.append($('<span>')
-							.attr('aria-hidden', 'true')
-							.text('«')
-						)
+            	//Previous
+            	var li = $('<li>')
+				.append($('<span>')
+					.attr('aria-label', '{{ trans('tournament.previous') }}')
+					.append($('<span>')
+						.attr('aria-hidden', 'true')
+						.text('«')
 					)
 				);
+            	if (json.current_page == 1) {
+					li.attr('class', 'disabled')
+            	} else {
+                	li.click(function(){ updateTournamentList(json.current_page - 1); });
+                	li.attr('style', 'cursor: pointer;');
+            	}
+				pagination.append(li);
 
-				pagination.append($('<li>')
-					.attr('class', 'disabled')
-					.append($('<a>')
-						.attr('href', json.next_page_url)
-						.attr('aria-label', '{{ trans('tournament.next') }}')
+				//pages
+				var i;
+				for (let i=1; i<=json.last_page; i++) {
+	            	var li = $('<li>')
+					.append($('<span>')
+						.attr('aria-label', '{{ trans('tournament.page') }}')
 						.append($('<span>')
 							.attr('aria-hidden', 'true')
-							.text('«')
+							.text(i)
 						)
+					);
+	            	if (json.current_page == i) {
+						li.attr('class', 'disabled')
+	            	} else {
+	                	li.click(function(){ updateTournamentList(i); });
+	                	li.attr('style', 'cursor: pointer;');
+	            	}
+					pagination.append(li);
+				}
+
+            	//Next
+            	var li = $('<li>')
+				.append($('<span>')
+					.attr('aria-label', '{{ trans('tournament.next') }}')
+					.append($('<span>')
+						.attr('aria-hidden', 'true')
+						.text('»')
 					)
 				);
+            	if (json.current_page == json.last_page) {
+					li.attr('class', 'disabled')
+            	} else {
+                	li.click(function(){ updateTournamentList(json.current_page + 1); });
+                	li.attr('style', 'cursor: pointer;');
+            	}
+				pagination.append(li);
 
-
+				
             	//tournament list table
             	var body = $("#tournamentList").find('tbody');
             	body.empty();
