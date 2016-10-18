@@ -18,7 +18,7 @@ body {
 /* Modal */
 
 .modal-header
- {    
+{    
  	padding:9px 15px;
     border-bottom:1px solid #eee;
     background-color: #337ab7;
@@ -29,4 +29,11 @@ body {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     color: white;
- }
+}
+ 
+/* Table */
+
+.handle
+{
+	cursor: move;
+}
