@@ -278,7 +278,11 @@ function showDeleteModal(tournamentId, tournamentLabel) {
  *
  * @param page page to display, default=1
  */
-function updateTournamentList(page = 1) {
+function updateTournamentList(page) {
+
+	// default value
+	var page = (typeof page !== 'undefined') ? page : 1;
+	
 	// displaying loading icon
 	$("#tournamentListError").addClass("hidden");
 	$("#tournamentListLoading").removeClass("hidden");

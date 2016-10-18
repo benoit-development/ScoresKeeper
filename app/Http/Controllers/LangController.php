@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class LangController extends Controller
 {
@@ -20,6 +21,12 @@ class LangController extends Controller
             Session::set('applocale', $lang);
             Session::save();
             App::setLocale($lang);
+            
+            // Save user preferred lang 
+            if ($user = Auth::user()) {
+                $user->lang = $lang;
+                $user->save();
+            }
         }
         
         return redirect('/');
