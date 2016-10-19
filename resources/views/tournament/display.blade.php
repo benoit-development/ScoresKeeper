@@ -29,9 +29,11 @@
                     <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>Slaughterhouse-Five</td><td>A+</td></tr>  
                     <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>B</td><td></td></tr>  
                     <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>Cat’s Cradle</td><td>A+</td></tr>  
-                    <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>Breakfast of Champions</td><td>C</td></tr>  
-                    <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>God Bless You, Mr. Rosewater</td><td>A</td></tr>  
-                </tbody>  
+                    <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>Breakfast of Champions</td><td>C</td></tr>    
+                </tbody>
+                <tfoot>
+                    <tr><td></td><td>God Bless You, Mr. Rosewater</td><td>A</td></tr>
+                </tfoot>  
             </table>   
       
             
@@ -52,6 +54,7 @@ $(document).ready(function() {
 	$("#tableScores tbody").sortable({
 	    helper: fixWidthHelper,
 	    handle: '.handle',
+	    items: 'tr:not(.no-handle)'
 	}).disableSelection();
 
 	/**
