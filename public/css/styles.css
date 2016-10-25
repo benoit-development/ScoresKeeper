@@ -33,6 +33,11 @@ body {
  
 /* Table */
 
+.table
+{
+	white-space:nowrap;
+}
+
 .handle
 {
 	cursor: move;

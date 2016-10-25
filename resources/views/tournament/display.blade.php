@@ -21,7 +21,7 @@
                 <thead>  
                 <tr>
                 	<th width="1px"></th>
-                	<th>Player</th>
+                	<th width="1px">Player</th>
                 	<th>1</th>
                 </tr>  
                 </thead>  
