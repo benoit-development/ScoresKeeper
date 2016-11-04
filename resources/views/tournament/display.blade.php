@@ -21,7 +21,7 @@
                 <thead>  
                 <tr>
                 	<th width="1px"></th>
-                	<th width="1px">Player</th>
+                	<th width="1px"><?php echo trans_choice('player.players', 5); ?></th>
                 	<th>1</th>
                 </tr>  
                 </thead>  
@@ -32,7 +32,28 @@
                     <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>Breakfast of Champions</td><td>C</td></tr>    
                 </tbody>
                 <tfoot>
-                    <tr><td></td><td>God Bless You, Mr. Rosewater</td><td>A</td></tr>
+                    <tr>
+                    	<td></td>
+                    	<td>
+				        	<!-- FORM to add a new player -->
+				        	<?php echo Form::open(['class' => 'form-inline', 'id' => 'newTournamentForm']); ?>
+				        	
+                                <!-- Payer name -->
+                                <div class="form-group">
+                                    <div class="form-group">
+                                    	<?php echo Form::text('name', null, ['class' => 'form-control', 'maxlength' => 255, 'placeholder' => trans('player.new_player')]); ?>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+				        	
+				        	<?php echo Form::close(); ?>
+                    	</td>
+                    	<td></td>
+                	</tr>
                 </tfoot>  
             </table>   
       
