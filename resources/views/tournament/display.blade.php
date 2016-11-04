@@ -45,7 +45,7 @@
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="fa fa-plus"></i>
+                                            <i class="fa fa-user-plus"></i>
                                         </button>
                                     </div>
                                 </div>
