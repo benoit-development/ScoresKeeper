@@ -292,7 +292,7 @@ function updateTournamentList(page) {
 	// Ajax call for tournament list
     $.ajax({
         type: "GET",
-        url: "{{ url('tournament/list') }}",
+        url: "{{ url('tournament/fetchAll') }}",
         dataType : 'json',
         data: {page : page},
         success: function(json) {
@@ -386,14 +386,16 @@ function updateTournamentList(page) {
                                 .attr('href', '{!! addslashes(url('tournament/play/')) !!}/' + data.id)
                                 .attr('class', 'btn btn-primary')
                                 .attr('type', 'button')
-                                .append($('<i>').attr('class', 'fa fa-play-circle-o').append(' @lang('tournament.play')'))
+                                .append($('<i>').attr('class', 'fa fa-play-circle-o'))
+                            	.append(' @lang('tournament.play')')
                             )       
                         ).append($('<td>')
                             .append($('<button>')
                                 .click(function () {showDeleteModal(data.id, data.label)})
                                 .attr('class', 'btn btn-danger')
                                 .attr('type', 'button')
-                                .append($('<i>').attr('class', 'fa fa-trash-o').append(' @lang('tournament.delete')'))
+                                .append($('<i>').attr('class', 'fa fa-trash'))
+                                .append(' @lang('tournament.delete')')
                             )       
                         )
                     );

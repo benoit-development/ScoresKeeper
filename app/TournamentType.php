@@ -11,7 +11,7 @@ class TournamentType extends Model
      * 
      * @var array
      */
-    const LIST = [
+    const TYPE_LIST = [
         1 => 'card'
     ];
 }

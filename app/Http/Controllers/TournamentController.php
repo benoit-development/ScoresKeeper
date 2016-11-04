@@ -43,7 +43,7 @@ class TournamentController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function list()
+    public function fetchAll()
     {
         $tournaments = Tournament::getPaginatedList();
 
@@ -61,7 +61,7 @@ class TournamentController extends Controller
         
         $validator = Validator::make($request->all(), [
             'label' => 'required|max:255',
-            'type' => 'required|integer|in:' . implode(',', array_keys(TournamentType::LIST)),
+            'type' => 'required|integer|in:' . implode(',', array_keys(TournamentType::TYPE_LIST)),
         ]);
         
         $response = [];
