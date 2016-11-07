@@ -41,7 +41,7 @@
                                 <!-- Payer name -->
                                 <div class="form-group">
                                     <div class="form-group">
-                                    	<?php echo Form::text('name', null, ['class' => 'form-control', 'maxlength' => 255, 'placeholder' => trans('player.new_player')]); ?>
+                                    	<?php echo Form::text('name', null, ['class' => 'form-control', 'maxlength' => 255, 'placeholder' => trans('player.new_player'), 'id' => 'playerName']); ?>
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">
@@ -78,6 +78,7 @@ $(document).ready(function() {
 	    items: 'tr:not(.no-handle)'
 	}).disableSelection();
 
+	
 	/**
 	 * Helper to fix the cells with
 	 */
@@ -88,7 +89,24 @@ $(document).ready(function() {
 	    return ui;
 	}
 
+
+	// Set submit function to add a new player
+    $("#newTournamentForm").submit(function(event){
+        // cancels the form submission
+        event.preventDefault();
+        // Ajax call to add a new player and update current page
+        addPlayer();
+    });
+
 });
+
+/**
+ * 
+ */
+function addPlayer() {
+	playerName = $("#playerName").val();
+	alert(playerName);
+}
 
 </script>
 

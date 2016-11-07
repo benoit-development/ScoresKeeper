@@ -40,5 +40,5 @@ body {
 
 .handle
 {
-	cursor: move;
+	cursor: row-resize;
 }
