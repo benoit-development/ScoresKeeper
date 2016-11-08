@@ -36,7 +36,7 @@
                     	<td></td>
                     	<td>
 				        	<!-- FORM to add a new player -->
-				        	<?php echo Form::open(['class' => 'form-inline', 'id' => 'newTournamentForm']); ?>
+				        	<?php echo Form::open(['class' => 'form-inline', 'id' => 'newPlayerForm']); ?>
 				        	
                                 <!-- Payer name -->
                                 <div class="form-group">
@@ -91,7 +91,7 @@ $(document).ready(function() {
 
 
 	// Set submit function to add a new player
-    $("#newTournamentForm").submit(function(event){
+    $("#newPlayerForm").submit(function(event){
         // cancels the form submission
         event.preventDefault();
         // Ajax call to add a new player and update current page
@@ -101,11 +101,15 @@ $(document).ready(function() {
 });
 
 /**
- * 
- */
+ * Add a new player in the current tournament
+ */  
 function addPlayer() {
-	playerName = $("#playerName").val();
-	alert(playerName);
+	var playerName = $("#playerName").val();
+	var row = $('<tr>')
+		.append($('<td>').attr('class', 'handle').append($('<i>').attr('class', 'fa fa-arrows-v')))
+		.append($('<td>').text(playerName))
+		;
+	$('#tableScores tbody').append(row);
 }
 
 </script>
