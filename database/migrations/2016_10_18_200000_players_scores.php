@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ParticipantsScores extends Migration
+class PlayersScores extends Migration
 {
     /**
      * Run the migrations.
