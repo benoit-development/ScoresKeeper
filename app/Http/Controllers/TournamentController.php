@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\TournamentType;
 use Illuminate\Support\Facades\Validator;
-use App\Tournament;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+
+use App\Tournament;
+use App\TournamentType;
+use App\Player;
 
 /**
  * Controller managing tournaments
@@ -64,6 +66,7 @@ class TournamentController extends Controller
             'type' => 'required|integer|in:' . implode(',', array_keys(TournamentType::TYPE_LIST)),
         ]);
         
+        // response to be returned in JSON
         $response = [];
 
         if ($validator->fails()) {
@@ -102,6 +105,8 @@ class TournamentController extends Controller
      */
     public function play(Request $request)
     {
+        Log::info('Displaying tournament');
+        
         $user = Auth::user();
         $tournament = Tournament::where(['id' => $request->id, 'user_id' => $user->id])->first();
         
@@ -119,9 +124,63 @@ class TournamentController extends Controller
      * @param Request $request
      */
     public function delete(Request $request) {
+        Log::info('Deleting tournament');
+        
         $user = Auth::user();
         $result = Tournament::where(['id' => $request->id, 'user_id' => $user->id])->delete();
         
         return response()->json((($result > 0)?'success':'error'));
+    }
+    
+    
+    /**
+     * Add a player to a tournament for ajax call (json response)
+     * Updated details of the tournament is returned in response
+     * 
+     * @param Request $request
+     */
+    public function addPlayer(Request $request) {
+
+        // error messages
+        $response = [];
+        
+        // validate data format
+        $validator = Validator::make($request->all(), [
+            'tournament_id' => 'required|integer',
+            'name' => 'required|max:255',
+        ]);
+        
+        if ($validator->fails()) {
+            Log::debug("error while adding player : \nInputs : " . print_r($validator->getData(), true) . "\nErrors : " . print_r($validator->errors(), true));
+            $response['errors'] = $validator->errors();
+            $response['status'] = 'error';
+        } else {
+            
+            // validate tournament id
+            $user = Auth::user();
+            $nbTournament = Tournament::where(['id' => $request->tournament_id, 'user_id' => $user->id])->count();
+            if ($nbTournament == 0) {
+                
+                // user can't add player in this tournament (doesn't exists or doesn't own it)
+                Log::debug("error wrong tournament id");
+                $response['errors'] = 'wrong tournament id';
+                $response['status'] = 'error';
+                
+            } else {
+            
+                // add player into database
+                $player = new Player();
+                $player->tournament_id = Input::get('tournament_id');
+                $player->name = Input::get('name');
+                $player->save();
+
+                Log::debug("new player inserted");
+                $response['status'] = 'success';
+                
+            }
+        }
+
+        // return response
+        return response()->json($response);
     }
 }

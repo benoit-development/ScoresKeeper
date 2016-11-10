@@ -43,6 +43,7 @@
                     	<td>
 				        	<!-- FORM to add a new player -->
 				        	<?php echo Form::open(['class' => 'form-inline', 'id' => 'newPlayerForm']); ?>
+				        	<?php echo Form::hidden('tournament_id', $tournament->id); ?>
 				        	
                                 <!-- Payer name -->
                                 <div class="form-group">
@@ -112,7 +113,7 @@ $(document).ready(function() {
 function addPlayer() {
 
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "{{ url('tournament/addPlayer') }}",
         dataType : 'json',
         data: $("#newPlayerForm").serialize(),
