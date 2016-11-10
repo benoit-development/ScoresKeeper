@@ -16,6 +16,12 @@
             </div>
             
             
+            <!-- Error updating tournamnent -->
+            <div class="alert alert-danger hidden" id="alertErrorTournamentUpdate">
+                <strong>@lang('tournament.error_updating_tournament')</strong>
+            </div>
+            
+            
 
             <table class="grid table table-striped table-hover" id="tableScores">  
                 <thead>  
@@ -104,6 +110,27 @@ $(document).ready(function() {
  * Add a new player in the current tournament
  */  
 function addPlayer() {
+
+    $.ajax({
+        type: "GET",
+        url: "{{ url('tournament/addPlayer') }}",
+        dataType : 'json',
+        data: $("#newPlayerForm").serialize(),
+        success: function(json) {
+            // success
+    		$("#alertErrorTournamentUpdate").addClass("hidden");
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            // error occured
+        	$("#alertErrorTournamentUpdate").removeClass("hidden");
+        }
+    });
+
+
+
+
+
+
 	var playerName = $("#playerName").val();
 	var row = $('<tr>')
 		.append($('<td>').attr('class', 'handle').append($('<i>').attr('class', 'fa fa-arrows-v')))

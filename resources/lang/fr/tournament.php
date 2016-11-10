@@ -31,5 +31,6 @@ return [
     'deletion_error' => 'Une erreur est survenue lors de la suppression du tournoi',
     'deleting_tournament' => 'Suppression d\'un tournoi',
     'ok' => 'OK',
+    'error_updating_tournament' => 'Une erreur est survenue lors de la mise à jour du tournoi',
 
 ];
