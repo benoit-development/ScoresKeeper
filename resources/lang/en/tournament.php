@@ -31,5 +31,6 @@ return [
     'deletion_error' => 'Tournament removal achieved with error',
     'deleting_tournament' => 'Tournament removal',
     'ok' => 'OK',
+    'error_updating_tournament' => 'An error occured while updating the tournament',
 
 ];

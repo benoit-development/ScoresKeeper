@@ -77,8 +77,8 @@
             </div>
             
             
-            <!-- Error retrieving tournmanent list -->
-            <div class="alert alert-danger hidden" id=tournamentListError>
+            <!-- Error retrieving tournamnent list -->
+            <div class="alert alert-danger hidden" id="tournamentListError">
                 <strong>@lang('tournament.error_get_your_tournaments')</strong>
             </div>
             

@@ -16,6 +16,12 @@
             </div>
             
             
+            <!-- Error updating tournamnent -->
+            <div class="alert alert-danger hidden" id="alertErrorTournamentUpdate">
+                <strong>@lang('tournament.error_updating_tournament')</strong>
+            </div>
+            
+            
 
             <table class="grid table table-striped table-hover" id="tableScores">  
                 <thead>  
@@ -36,16 +42,17 @@
                     	<td></td>
                     	<td>
 				        	<!-- FORM to add a new player -->
-				        	<?php echo Form::open(['class' => 'form-inline', 'id' => 'newTournamentForm']); ?>
+				        	<?php echo Form::open(['class' => 'form-inline', 'id' => 'newPlayerForm']); ?>
+				        	<?php echo Form::hidden('tournament_id', $tournament->id); ?>
 				        	
                                 <!-- Payer name -->
                                 <div class="form-group">
                                     <div class="form-group">
-                                    	<?php echo Form::text('name', null, ['class' => 'form-control', 'maxlength' => 255, 'placeholder' => trans('player.new_player')]); ?>
+                                    	<?php echo Form::text('name', null, ['class' => 'form-control', 'maxlength' => 255, 'placeholder' => trans('player.new_player'), 'id' => 'playerName']); ?>
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">
-                                            <i class="fa fa-plus"></i>
+                                            <i class="fa fa-user-plus"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -78,6 +85,7 @@ $(document).ready(function() {
 	    items: 'tr:not(.no-handle)'
 	}).disableSelection();
 
+	
 	/**
 	 * Helper to fix the cells with
 	 */
@@ -88,7 +96,49 @@ $(document).ready(function() {
 	    return ui;
 	}
 
+
+	// Set submit function to add a new player
+    $("#newPlayerForm").submit(function(event){
+        // cancels the form submission
+        event.preventDefault();
+        // Ajax call to add a new player and update current page
+        addPlayer();
+    });
+
 });
+
+/**
+ * Add a new player in the current tournament
+ */  
+function addPlayer() {
+
+    $.ajax({
+        type: "POST",
+        url: "{{ url('tournament/addPlayer') }}",
+        dataType : 'json',
+        data: $("#newPlayerForm").serialize(),
+        success: function(json) {
+            // success
+    		$("#alertErrorTournamentUpdate").addClass("hidden");
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            // error occured
+        	$("#alertErrorTournamentUpdate").removeClass("hidden");
+        }
+    });
+
+
+
+
+
+
+	var playerName = $("#playerName").val();
+	var row = $('<tr>')
+		.append($('<td>').attr('class', 'handle').append($('<i>').attr('class', 'fa fa-arrows-v')))
+		.append($('<td>').text(playerName))
+		;
+	$('#tableScores tbody').append(row);
+}
 
 </script>
 
