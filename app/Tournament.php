@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Tournament extends Model
 {
@@ -34,5 +35,18 @@ class Tournament extends Model
      */
     public static function getPaginatedList() {
         return self::orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->paginate(10);
+    }
+    
+    /**
+     * Get all useful informations of this tournament like players, scrores, ...
+     * 
+     * @return array
+     */
+    public function getDetails() {
+        return [
+            'players' => Player::orderBy('order', 'asc')
+                ->select('id', 'name', 'tournament_id', 'order')
+                ->where('tournament_id', $this->id)->get(),
+        ];
     }
 }

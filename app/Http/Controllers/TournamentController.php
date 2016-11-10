@@ -99,22 +99,22 @@ class TournamentController extends Controller
 
 
     /**
-     * Display an existing tournament to play it
+     * Play an existing tournament to play it
      *
      * @return \Illuminate\Http\Response
      */
     public function play(Request $request)
     {
-        Log::info('Displaying tournament');
+        Log::info('Playing tournament');
         
         $user = Auth::user();
         $tournament = Tournament::where(['id' => $request->id, 'user_id' => $user->id])->first();
         
-        if (!isset($tournament)) {
+        if (!($tournament instanceof Tournament)) {
             abort(404, 'Tournament not found');
         }
         
-        return view('tournament.display', ['tournament' => $tournament]);
+        return view('tournament.play', ['tournament' => $tournament, 'details' => $tournament->getDetails()]);
     }
     
     
@@ -158,8 +158,8 @@ class TournamentController extends Controller
             
             // validate tournament id
             $user = Auth::user();
-            $nbTournament = Tournament::where(['id' => $request->tournament_id, 'user_id' => $user->id])->count();
-            if ($nbTournament == 0) {
+            $tournament = Tournament::where(['id' => $request->tournament_id, 'user_id' => $user->id])->first();
+            if (!($tournament instanceof Tournament)) {
                 
                 // user can't add player in this tournament (doesn't exists or doesn't own it)
                 Log::debug("error wrong tournament id");
@@ -176,6 +176,7 @@ class TournamentController extends Controller
 
                 Log::debug("new player inserted");
                 $response['status'] = 'success';
+                $response['tournament'] = $tournament->getDetails();
                 
             }
         }
