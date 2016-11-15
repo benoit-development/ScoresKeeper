@@ -151,7 +151,12 @@ function refreshScores() {
 
 		var row = $('<tr>')
 			.append($('<td>').attr('class', 'handle').append($('<i>').attr('class', 'fa fa-arrows-v')))
-			.append($('<td>').text(this.name))
+			.append($('<td>')
+				.text(this.name)
+				.append($('<button>').attr('class', 'btn btn-default dropdown-toggle pull-right btn-xs').attr('type', 'button').attr('data-toggle', 'true').attr('aria-expanded', 'true')
+					.append($('<i>').attr('class', 'fa fa-ellipsis-v'))
+				)
+			)
 			;
 		$('#tableScores tbody').append(row);
 		
