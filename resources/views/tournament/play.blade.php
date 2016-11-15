@@ -15,7 +15,6 @@
 				</h1>
             </div>
             
-            
             <!-- Error updating tournamnent -->
             <div class="alert alert-danger hidden" id="alertErrorTournamentUpdate">
                 <strong>@lang('tournament.error_updating_tournament')</strong>
@@ -145,7 +144,7 @@ function refreshScores() {
 	// empty current table
 	var body = $("#tableScores").find("tbody");
 	body.empty();
-
+	
 	// populate table with new data
 	$(details.players).each(function() {
 
@@ -154,12 +153,12 @@ function refreshScores() {
 			.append($('<td>')
 				.text(this.name)
 				.append($('<div>').attr('class', 'dropdown pull-right')
-    				.append($('<button>').attr('class', 'btn btn-default dropdown-toggle btn-xs').attr('type', 'button').attr('data-toggle', 'true').attr('aria-expanded', 'true').attr('id',  'menuPlayer_' + this.id)
+    				.append($('<button>').attr('class', 'btn btn-default dropdown-toggle btn-xs').attr('type', 'button').attr('data-toggle', 'dropdown').attr('aria-expanded', 'true').attr('id',  'menuPlayer_' + this.id)
     					.append($('<i>').attr('class', 'fa fa-ellipsis-v'))
     				)
     				.append($('<ul>').attr('class', 'dropdown-menu').attr('aria-labelledby', 'menuPlayer_' + this.id)
 	    				.append($('<li>')
-    						.append($('<span>').text('<?php echo trans('player.delete') ?>'))
+    						.append($('<a>').attr('href', '#').text('<?php echo trans('player.delete') ?>'))
 	    				)
     				)
 				)
