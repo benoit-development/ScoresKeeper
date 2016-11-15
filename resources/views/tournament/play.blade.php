@@ -32,10 +32,6 @@
                 </tr>  
                 </thead>  
                 <tbody>  
-                    <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>Slaughterhouse-Five</td><td>A+</td></tr>  
-                    <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>B</td><td></td></tr>  
-                    <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>Cat’s Cradle</td><td>A+</td></tr>  
-                    <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>Breakfast of Champions</td><td>C</td></tr>    
                 </tbody>
                 <tfoot>
                     <tr>
@@ -72,6 +68,12 @@
 
 <script type="text/javascript">
 
+/**
+ * all needed details for the displayed tournament
+ */
+var tournament = <?php echo json_encode($tournament); ?>;
+var details = <?php echo json_encode($details); ?>;
+
 
 /**
  * Page initialisation
@@ -105,6 +107,9 @@ $(document).ready(function() {
         addPlayer();
     });
 
+    // refresh scores table
+    refreshScores();
+
 });
 
 /**
@@ -120,6 +125,8 @@ function addPlayer() {
         success: function(json) {
             // success
     		$("#alertErrorTournamentUpdate").addClass("hidden");
+    		details = json.details;
+    		refreshScores();
         },
         error: function(xhr, ajaxOptions, thrownError) {
             // error occured
@@ -127,17 +134,28 @@ function addPlayer() {
         }
     });
 
+}
 
 
+/**
+ * Refresh scores table from details in variable tournament
+ */
+function refreshScores() {
 
+	// empty current table
+	var body = $("#tableScores").find("tbody");
+	body.empty();
 
+	// populate table with new data
+	$(details.players).each(function() {
 
-	var playerName = $("#playerName").val();
-	var row = $('<tr>')
-		.append($('<td>').attr('class', 'handle').append($('<i>').attr('class', 'fa fa-arrows-v')))
-		.append($('<td>').text(playerName))
-		;
-	$('#tableScores tbody').append(row);
+		var row = $('<tr>')
+			.append($('<td>').attr('class', 'handle').append($('<i>').attr('class', 'fa fa-arrows-v')))
+			.append($('<td>').text(this.name))
+			;
+		$('#tableScores tbody').append(row);
+		
+	});
 }
 
 </script>

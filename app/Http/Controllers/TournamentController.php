@@ -176,7 +176,7 @@ class TournamentController extends Controller
 
                 Log::debug("new player inserted");
                 $response['status'] = 'success';
-                $response['tournament'] = $tournament->getDetails();
+                $response['details'] = $tournament->getDetails();
                 
             }
         }
