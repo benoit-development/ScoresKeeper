@@ -21,7 +21,7 @@ Route::get('/tournament/home', ['uses' => 'TournamentController@home', 'as' => '
 Route::post('/tournament/create', 'TournamentController@create');
 Route::get('/tournament/play/{id}', ['uses' => 'TournamentController@play', 'as' => 'play'])
 ->where('id', '[0-9]+');
-Route::post('/tournament/delete', ['uses' => 'TournamentController@delete', 'as' => 'delete']);
+Route::post('/tournament/delete', ['uses' => 'TournamentController@delete']);
 Route::get('/tournament/fetchAll', ['uses' => 'TournamentController@fetchAll', 'as' => 'fetchAll']);
 Route::post('/tournament/addPlayer', 'TournamentController@addPlayer');
 
