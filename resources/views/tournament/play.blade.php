@@ -15,7 +15,6 @@
 				</h1>
             </div>
             
-            
             <!-- Error updating tournamnent -->
             <div class="alert alert-danger hidden" id="alertErrorTournamentUpdate">
                 <strong>@lang('tournament.error_updating_tournament')</strong>
@@ -32,10 +31,6 @@
                 </tr>  
                 </thead>  
                 <tbody>  
-                    <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>Slaughterhouse-Five</td><td>A+</td></tr>  
-                    <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>B</td><td></td></tr>  
-                    <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>Cat’s Cradle</td><td>A+</td></tr>  
-                    <tr><td class="handle"><i class="fa fa-arrows-v"></i></td><td>Breakfast of Champions</td><td>C</td></tr>    
                 </tbody>
                 <tfoot>
                     <tr>
@@ -69,8 +64,56 @@
     </div>
 </div>
 
+<!-- Modal dialog box for deletion -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-delete">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">&nbsp;</h4>
+      </div>
+      <div class="modal-body">
+        <p>@lang('player.confirm_player_delete')</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" id="modal-delete-button">
+        	@lang('player.delete')
+    	</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">
+        	@lang('player.cancel')
+    	</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-delete-result">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">@lang('player.player_deleted')</h4>
+      </div>
+      <div class="modal-body">
+        <p>&nbsp;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">
+        	@lang('player.ok')
+    	</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <script type="text/javascript">
+
+/**
+ * all needed details for the displayed tournament
+ */
+var tournament = <?php echo json_encode($tournament); ?>;
+var details = <?php echo json_encode($details); ?>;
 
 
 /**
@@ -105,6 +148,9 @@ $(document).ready(function() {
         addPlayer();
     });
 
+    // refresh scores table
+    refreshScores();
+
 });
 
 /**
@@ -120,6 +166,8 @@ function addPlayer() {
         success: function(json) {
             // success
     		$("#alertErrorTournamentUpdate").addClass("hidden");
+    		details = json.details;
+    		refreshScores();
         },
         error: function(xhr, ajaxOptions, thrownError) {
             // error occured
@@ -127,17 +175,81 @@ function addPlayer() {
         }
     });
 
+}
+
+
+/**
+ * Refresh scores table from details in variable tournament
+ */
+function refreshScores() {
+
+	// empty current table
+	var body = $("#tableScores").find("tbody");
+	body.empty();
+	
+	// populate table with new data
+	$(details.players).each(function() {
+
+		var playerId = this.id;
+		var playerName = this.name;
+		
+		var row = $('<tr>')
+			.append($('<td>').attr('class', 'handle').append($('<i>').attr('class', 'fa fa-arrows-v')))
+			.append($('<td>')
+				.text(this.name)
+				.append($('<div>').attr('class', 'dropdown pull-right')
+    				.append($('<button>').attr('class', 'btn btn-default dropdown-toggle btn-xs').attr('type', 'button').attr('data-toggle', 'dropdown').attr('aria-expanded', 'true').attr('id',  'menuPlayer_' + this.id)
+    					.append($('<i>').attr('class', 'fa fa-ellipsis-v'))
+    				)
+    				.append($('<ul>').attr('class', 'dropdown-menu').attr('aria-labelledby', 'menuPlayer_' + this.id)
+	    				.append($('<li>')
+    						.append($('<a>').attr('href', '#').click(function(){ showDeleteModal(playerId, playerName); }).append($('<i>').attr('class', 'fa fa-trash')).append(' @lang('player.delete')'))
+	    				)
+    				)
+				)
+			)
+			;
+		$('#tableScores tbody').append(row);
+		
+	});
+}
 
 
 
+/**
+ * show modal dialog to delete a player
+ *
+ * @param playerId
+ * @param playerName 
+ */
+function showDeleteModal(playerId, playerName) {
+	$("#modal-delete .modal-title").text(playerName);
 
-
-	var playerName = $("#playerName").val();
-	var row = $('<tr>')
-		.append($('<td>').attr('class', 'handle').append($('<i>').attr('class', 'fa fa-arrows-v')))
-		.append($('<td>').text(playerName))
-		;
-	$('#tableScores tbody').append(row);
+	$("#modal-delete-button").off("click");
+	$("#modal-delete-button").on( "click", function() {
+		$.ajax({
+            type: "GET",
+            url: "{{ url('player/delete') }}",
+            data: {id : playerId},
+            dataType : 'json',
+            success: function(json) {
+                if (json == 'success') {
+                    updateTournamentList();
+                    $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_success')");
+                } else {
+                    $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_error')");
+                }
+            },
+            error: function(json) {
+                $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_error')");
+            },
+            complete: function(json) {
+                $("#modal-delete-result").modal();
+            }
+		});
+	});
+	
+	$("#modal-delete").modal();
 }
 
 </script>

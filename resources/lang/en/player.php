@@ -14,5 +14,8 @@ return [
     'players' => 'Player|Players',
     'name' => 'Name',
     'new_player' => 'New player',
+    'delete' => 'Delete',
+    'ok' => 'OK',
+    'cancel' => 'Cancel',
 
 ];

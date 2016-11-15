@@ -126,10 +126,24 @@ class TournamentController extends Controller
     public function delete(Request $request) {
         Log::info('Deleting tournament');
         
-        $user = Auth::user();
-        $result = Tournament::where(['id' => $request->id, 'user_id' => $user->id])->delete();
+        // validate data
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer',
+        ]);
         
-        return response()->json((($result > 0)?'success':'error'));
+        if ($validator->fails()) {
+            
+            Log::debug("error while adding player : \nInputs : " . print_r($validator->getData(), true) . "\nErrors : " . print_r($validator->errors(), true));
+            return response()->json('error');
+            
+        } else {
+        
+            $user = Auth::user();
+            $result = Tournament::where(['id' => $request->id, 'user_id' => $user->id])->delete();
+            return response()->json((($result > 0)?'success':'error'));
+            
+        }
+        
     }
     
     
@@ -176,7 +190,7 @@ class TournamentController extends Controller
 
                 Log::debug("new player inserted");
                 $response['status'] = 'success';
-                $response['tournament'] = $tournament->getDetails();
+                $response['details'] = $tournament->getDetails();
                 
             }
         }

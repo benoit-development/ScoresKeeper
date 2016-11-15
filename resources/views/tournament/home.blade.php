@@ -249,8 +249,9 @@ function showDeleteModal(tournamentId, tournamentLabel) {
 	$("#modal-delete-button").off("click");
 	$("#modal-delete-button").on( "click", function() {
 		$.ajax({
-            type: "GET",
-            url: "{{ url('tournament/delete') }}/" + tournamentId,
+            type: "POST",
+            url: "{{ url('tournament/delete') }}",
+            data: {id : tournamentId},
             dataType : 'json',
             success: function(json) {
                 if (json == 'success') {
@@ -388,7 +389,7 @@ function updateTournamentList(page) {
                                 .attr('type', 'button')
                                 .append($('<i>').attr('class', 'fa fa-play-circle-o'))
                             	.append(' @lang('tournament.play')')
-                            )       
+                            )
                         ).append($('<td>')
                             .append($('<button>')
                                 .click(function () {showDeleteModal(data.id, data.label)})
