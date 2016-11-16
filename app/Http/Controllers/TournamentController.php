@@ -119,12 +119,12 @@ class TournamentController extends Controller
     
     
     /**
-     * Tournment deletion for ajax call (json response)
+     * Tournment archive for ajax call (json response)
      * 
      * @param Request $request
      */
-    public function delete(Request $request) {
-        Log::info('Deleting tournament');
+    public function archive(Request $request) {
+        Log::info('Archiving tournament');
         
         // validate data
         $validator = Validator::make($request->all(), [
@@ -133,13 +133,13 @@ class TournamentController extends Controller
         
         if ($validator->fails()) {
             
-            Log::debug("error while adding player : \nInputs : " . print_r($validator->getData(), true) . "\nErrors : " . print_r($validator->errors(), true));
+            Log::debug("error while archiving tournament : \nInputs : " . print_r($validator->getData(), true) . "\nErrors : " . print_r($validator->errors(), true));
             return response()->json('error');
             
         } else {
         
             $user = Auth::user();
-            $result = Tournament::where(['id' => $request->id, 'user_id' => $user->id, 'archived' => false])->delete();
+            $result = Tournament::where(['id' => $request->id, 'user_id' => $user->id, 'archived' => false])->update(['archived' => true]);
             return response()->json((($result > 0)?'success':'error'));
             
         }

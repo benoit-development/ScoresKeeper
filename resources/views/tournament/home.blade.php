@@ -121,9 +121,9 @@
                 
             </div>
             
-            <!-- Form for tournament deletion -->
-            <?php echo Form::open(['id' => 'deleteTournamentForm']); ?>
-        	<?php echo Form::hidden('id', null, ['id' => 'deleteTournamentForm_id']); ?>
+            <!-- Form for tournament archiving -->
+            <?php echo Form::open(['id' => 'archiveTournamentForm']); ?>
+        	<?php echo Form::hidden('id', null, ['id' => 'archiveTournamentForm_id']); ?>
             <?php echo Form::close(); ?>
             
             
@@ -131,8 +131,8 @@
     </div>
 </div>
 
-<!-- Modal dialog box for deletion -->
-<div class="modal fade" tabindex="-1" role="dialog" id="modal-delete">
+<!-- Modal dialog box for archiving -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-archive">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -140,11 +140,11 @@
         <h4 class="modal-title">&nbsp;</h4>
       </div>
       <div class="modal-body">
-        <p>@lang('tournament.confirm_tournament_delete')</p>
+        <p>@lang('tournament.confirm_tournament_archive')</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal" id="modal-delete-button">
-        	@lang('tournament.delete')
+        <button type="button" class="btn btn-danger" data-dismiss="modal" id="modal-archive-button">
+        	@lang('tournament.archive')
     	</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal">
         	@lang('tournament.cancel')
@@ -154,12 +154,12 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="modal fade" tabindex="-1" role="dialog" id="modal-delete-result">
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-archive-result">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">@lang('tournament.deleting_tournament')</h4>
+        <h4 class="modal-title">@lang('tournament.archiving_tournament')</h4>
       </div>
       <div class="modal-body">
         <p>&nbsp;</p>
@@ -244,42 +244,42 @@ function createTournament() {
 
 
 /**
- * show modal dialog to delete a tournament
+ * show modal dialog to archive a tournament
  *
  * @param tournamentId
  * @param tournamentLabel 
  */
-function showDeleteModal(tournamentId, tournamentLabel) {
+function showArchiveModal(tournamentId, tournamentLabel) {
 
-	$('#deleteTournamentForm_id').val(tournamentId);
+	$('#archiveTournamentForm_id').val(tournamentId);
 	
-	$("#modal-delete .modal-title").text(tournamentLabel);
+	$("#modal-archive .modal-title").text(tournamentLabel);
 
-	$("#modal-delete-button").off("click");
-	$("#modal-delete-button").on( "click", function() {
+	$("#modal-archive-button").off("click");
+	$("#modal-archive-button").on( "click", function() {
 		$.ajax({
             type: "POST",
-            url: "{{ url('tournament/delete') }}",
-            data: $('#deleteTournamentForm').serialize(),
+            url: "{{ url('tournament/archive') }}",
+            data: $('#archiveTournamentForm').serialize(),
             dataType : 'json',
             success: function(json) {
                 if (json == 'success') {
                     updateTournamentList();
-                    $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_success')");
+                    $("#modal-archive-result .modal-body").text("@lang('tournament.archiving_success')");
                 } else {
-                    $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_error')");
+                    $("#modal-archive-result .modal-body").text("@lang('tournament.archiving_error')");
                 }
             },
             error: function(json) {
-                $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_error')");
+                $("#modal-archive-result .modal-body").text("@lang('tournament.archiving_error')");
             },
             complete: function(json) {
-                $("#modal-delete-result").modal();
+                $("#modal-archive-result").modal();
             }
 		});
 	});
 	
-	$("#modal-delete").modal();
+	$("#modal-archive").modal();
 }
 
 
@@ -396,16 +396,16 @@ function updateTournamentList(page) {
                                 .attr('href', '{!! addslashes(url('tournament/play/')) !!}/' + data.id)
                                 .attr('class', 'btn btn-primary')
                                 .attr('type', 'button')
-                                .append($('<i>').attr('class', 'fa fa-play-circle-o'))
+                                .append($('<i>').attr('class', 'fa fa-play'))
                             	.append(' @lang('tournament.play')')
                             )
                         ).append($('<td>')
                             .append($('<button>')
-                                .click(function () {showDeleteModal(data.id, data.label)})
+                                .click(function () {showArchiveModal(data.id, data.label)})
                                 .attr('class', 'btn btn-danger')
                                 .attr('type', 'button')
-                                .append($('<i>').attr('class', 'fa fa-trash'))
-                                .append(' @lang('tournament.delete')')
+                                .append($('<i>').attr('class', 'fa fa-hdd-o'))
+                                .append(' @lang('tournament.archive')')
                             )       
                         )
                     );
