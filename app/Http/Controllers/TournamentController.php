@@ -108,7 +108,7 @@ class TournamentController extends Controller
         Log::info('Playing tournament');
         
         $user = Auth::user();
-        $tournament = Tournament::where(['id' => $request->id, 'user_id' => $user->id])->first();
+        $tournament = Tournament::where(['id' => $request->id, 'user_id' => $user->id, 'archived' => false])->first();
         
         if (!($tournament instanceof Tournament)) {
             abort(404, 'Tournament not found');
@@ -139,7 +139,7 @@ class TournamentController extends Controller
         } else {
         
             $user = Auth::user();
-            $result = Tournament::where(['id' => $request->id, 'user_id' => $user->id])->delete();
+            $result = Tournament::where(['id' => $request->id, 'user_id' => $user->id, 'archived' => false])->delete();
             return response()->json((($result > 0)?'success':'error'));
             
         }
@@ -172,7 +172,7 @@ class TournamentController extends Controller
             
             // validate tournament id
             $user = Auth::user();
-            $tournament = Tournament::where(['id' => $request->tournament_id, 'user_id' => $user->id])->first();
+            $tournament = Tournament::where(['id' => $request->tournament_id, 'user_id' => $user->id, 'archived' => false])->first();
             if (!($tournament instanceof Tournament)) {
                 
                 // user can't add player in this tournament (doesn't exists or doesn't own it)

@@ -29,7 +29,11 @@ class UpdateTournamentTable extends Migration
      */
     public function down()
     {
-
+        Schema::table('tournaments', function (Blueprint $table) {
+            $table->dropColumn('type_id');
+            $table->integer('tournament_id')->unsigned();
+            $table->foreign('tournament_id')->references('id')->on('tournaments');
+        });
     }
 }
 

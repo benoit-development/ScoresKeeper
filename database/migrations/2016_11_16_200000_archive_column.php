@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateUserPreferredLang extends Migration
+class ArchiveColumn extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class UpdateUserPreferredLang extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('lang', 10)->nullable();
+        Schema::table('tournaments', function (Blueprint $table) {
+            $table->boolean('archived')->default(false);
         });
     }
 
@@ -24,8 +24,8 @@ class UpdateUserPreferredLang extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('lang');
+        Schema::table('tournaments', function (Blueprint $table) {
+            $table->dropColumn('archived');
         });
     }
 }
