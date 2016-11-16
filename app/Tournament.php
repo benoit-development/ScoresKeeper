@@ -34,7 +34,7 @@ class Tournament extends Model
      * return Iterator
      */
     public static function getPaginatedList() {
-        return self::orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->paginate(10);
+        return self::orderBy('created_at', 'desc')->where(['user_id' => Auth::user()->id, 'archived' => false])->paginate(10);
     }
     
     /**

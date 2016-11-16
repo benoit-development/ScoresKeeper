@@ -108,7 +108,7 @@ class TournamentController extends Controller
         Log::info('Playing tournament');
         
         $user = Auth::user();
-        $tournament = Tournament::where(['id' => $request->id, 'user_id' => $user->id])->first();
+        $tournament = Tournament::where(['id' => $request->id, 'user_id' => $user->id, 'archived' => false])->first();
         
         if (!($tournament instanceof Tournament)) {
             abort(404, 'Tournament not found');
@@ -119,12 +119,12 @@ class TournamentController extends Controller
     
     
     /**
-     * Tournment deletion for ajax call (json response)
+     * Tournment archive for ajax call (json response)
      * 
      * @param Request $request
      */
-    public function delete(Request $request) {
-        Log::info('Deleting tournament');
+    public function archive(Request $request) {
+        Log::info('Archiving tournament');
         
         // validate data
         $validator = Validator::make($request->all(), [
@@ -133,13 +133,13 @@ class TournamentController extends Controller
         
         if ($validator->fails()) {
             
-            Log::debug("error while adding player : \nInputs : " . print_r($validator->getData(), true) . "\nErrors : " . print_r($validator->errors(), true));
+            Log::debug("error while archiving tournament : \nInputs : " . print_r($validator->getData(), true) . "\nErrors : " . print_r($validator->errors(), true));
             return response()->json('error');
             
         } else {
         
             $user = Auth::user();
-            $result = Tournament::where(['id' => $request->id, 'user_id' => $user->id])->delete();
+            $result = Tournament::where(['id' => $request->id, 'user_id' => $user->id, 'archived' => false])->update(['archived' => true]);
             return response()->json((($result > 0)?'success':'error'));
             
         }
@@ -172,7 +172,7 @@ class TournamentController extends Controller
             
             // validate tournament id
             $user = Auth::user();
-            $tournament = Tournament::where(['id' => $request->tournament_id, 'user_id' => $user->id])->first();
+            $tournament = Tournament::where(['id' => $request->tournament_id, 'user_id' => $user->id, 'archived' => false])->first();
             if (!($tournament instanceof Tournament)) {
                 
                 // user can't add player in this tournament (doesn't exists or doesn't own it)
