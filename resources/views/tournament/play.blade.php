@@ -166,6 +166,7 @@ function addPlayer() {
         success: function(json) {
             // success
     		$("#alertErrorTournamentUpdate").addClass("hidden");
+    		$("#playerName").val("");
     		details = json.details;
     		refreshScores();
         },
