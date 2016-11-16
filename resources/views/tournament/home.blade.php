@@ -121,6 +121,12 @@
                 
             </div>
             
+            <!-- Form for tournament deletion -->
+            <?php echo Form::open(['id' => 'deleteTournamentForm']); ?>
+        	<?php echo Form::hidden('id', null, ['id' => 'deleteTournamentForm_id']); ?>
+            <?php echo Form::close(); ?>
+            
+            
         </div>
     </div>
 </div>
@@ -244,6 +250,9 @@ function createTournament() {
  * @param tournamentLabel 
  */
 function showDeleteModal(tournamentId, tournamentLabel) {
+
+	$('#deleteTournamentForm_id').val(tournamentId);
+	
 	$("#modal-delete .modal-title").text(tournamentLabel);
 
 	$("#modal-delete-button").off("click");
@@ -251,7 +260,7 @@ function showDeleteModal(tournamentId, tournamentLabel) {
 		$.ajax({
             type: "POST",
             url: "{{ url('tournament/delete') }}",
-            data: {id : tournamentId},
+            data: $('#deleteTournamentForm').serialize(),
             dataType : 'json',
             success: function(json) {
                 if (json == 'success') {
