@@ -18,6 +18,8 @@ return [
     'ok' => 'OK',
     'cancel' => 'Annuler',
     'confirm_player_delete' => 'Voulez-vous supprimer ce joueur ?',
-    'player_deleted' => 'Joueur supprimé',
+    'deleting_player' => 'Suppression d\'un joueur',
+    'deletion_success' => 'Joueur supprimé',
+    'deletion_error' => 'Un erreur est survenue.',
 
 ];

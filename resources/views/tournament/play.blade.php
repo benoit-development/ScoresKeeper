@@ -57,7 +57,12 @@
                     	<td></td>
                 	</tr>
                 </tfoot>  
-            </table>   
+            </table> 
+            
+            <!-- Form for player deletion -->
+            <?php echo Form::open(['id' => 'deletePlayerForm']); ?>
+        	<?php echo Form::hidden('id', null, ['id' => 'deletePlayerForm_id']); ?>
+            <?php echo Form::close(); ?>  
       
             
         </div>
@@ -160,7 +165,7 @@ function addPlayer() {
 
     $.ajax({
         type: "POST",
-        url: "{{ url('tournament/addPlayer') }}",
+        url: "{{ url('player/add') }}",
         dataType : 'json',
         data: $("#newPlayerForm").serialize(),
         success: function(json) {
@@ -224,25 +229,29 @@ function refreshScores() {
  * @param playerName 
  */
 function showDeleteModal(playerId, playerName) {
+
+	$('#deletePlayerForm_id').val(playerId);
+	
 	$("#modal-delete .modal-title").text(playerName);
 
 	$("#modal-delete-button").off("click");
 	$("#modal-delete-button").on( "click", function() {
 		$.ajax({
-            type: "GET",
+            type: "POST",
             url: "{{ url('player/delete') }}",
-            data: {id : playerId},
+            data: $('#deletePlayerForm').serialize(),
             dataType : 'json',
             success: function(json) {
-                if (json == 'success') {
-                    updateTournamentList();
-                    $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_success')");
+                if (json.status == 'success') {
+                    details = json.details;
+                	refreshScores();
+                    $("#modal-delete-result .modal-body").text("@lang('player.deletion_success')");
                 } else {
-                    $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_error')");
+                    $("#modal-delete-result .modal-body").text("@lang('player.deletion_error')");
                 }
             },
             error: function(json) {
-                $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_error')");
+                $("#modal-delete-result .modal-body").text("@lang('player.deletion_error')");
             },
             complete: function(json) {
                 $("#modal-delete-result").modal();

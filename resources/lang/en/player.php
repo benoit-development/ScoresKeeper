@@ -17,5 +17,9 @@ return [
     'delete' => 'Delete',
     'ok' => 'OK',
     'cancel' => 'Cancel',
+    'confirm_player_delete' => 'Do you want to delete this player ?',
+    'deleting_player' => 'Deleting a player',
+    'deletion_success' => 'Player deleted',
+    'deletion_error' => 'Error while deleting player.',
 
 ];

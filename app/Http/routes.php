@@ -21,9 +21,12 @@ Route::get('/tournament/home', ['uses' => 'TournamentController@home', 'as' => '
 Route::post('/tournament/create', 'TournamentController@create');
 Route::get('/tournament/play/{id}', ['uses' => 'TournamentController@play', 'as' => 'play'])
 ->where('id', '[0-9]+');
-Route::post('/tournament/archive', ['uses' => 'TournamentController@archive']);
-Route::get('/tournament/fetchAll', ['uses' => 'TournamentController@fetchAll', 'as' => 'fetchAll']);
-Route::post('/tournament/addPlayer', 'TournamentController@addPlayer');
+Route::post('/tournament/archive', 'TournamentController@archive');
+Route::get('/tournament/fetchAll', 'TournamentController@fetchAll');
+
+// for players
+Route::post('/player/add', 'PlayerController@add');
+Route::post('/player/delete', 'PlayerController@delete');
 
 // lang
 Route::get('/lang/change/{lang}', 'LangController@change')
