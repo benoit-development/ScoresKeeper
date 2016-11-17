@@ -98,7 +98,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">@lang('player.player_deleted')</h4>
+        <h4 class="modal-title">@lang('player.deleting_player')</h4>
       </div>
       <div class="modal-body">
         <p>&nbsp;</p>
@@ -245,15 +245,13 @@ function showDeleteModal(playerId, playerName) {
                 if (json.status == 'success') {
                     details = json.details;
                 	refreshScores();
-                    $("#modal-delete-result .modal-body").text("@lang('player.deletion_success')");
                 } else {
                     $("#modal-delete-result .modal-body").text("@lang('player.deletion_error')");
+                    $("#modal-delete-result").modal();
                 }
             },
             error: function(json) {
                 $("#modal-delete-result .modal-body").text("@lang('player.deletion_error')");
-            },
-            complete: function(json) {
                 $("#modal-delete-result").modal();
             }
 		});

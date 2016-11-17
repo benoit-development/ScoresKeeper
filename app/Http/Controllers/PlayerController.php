@@ -105,17 +105,31 @@ class PlayerController extends Controller
         } else {
         
             $user = Auth::user();
-            $result = Player::where(['players.id' => $request->id])
-            ->join('tournaments', 'players.tournament_id', '=', 'tournaments.id')
-            ->where(['tournaments.user_id' => $user->id])
-            ->delete();
+
+            // retrieve associated tournament
+            $tournament = Tournament::where(['tournaments.user_id' => $user->id, 'tournaments.archived' => false])
+            ->join('players', 'players.tournament_id', '=', 'tournaments.id')
+            ->select('tournaments.*')
+            ->first();
             
-            if ($result > 0) {
-                $response['status'] = 'success';
-                $tournament = Tournament::where(['id' => $request->tournament_id, 'user_id' => $user->id, 'archived' => false])->first();
-                $response['details'] = $tournament->getDetails();
-            } else {
+            if (!$tournament) {
+            
+                Log::debug("error while getting tournament data : \nInputs : " . print_r($validator->getData(), true) . "\nErrors : " . print_r($validator->errors(), true));
                 $response['status'] = 'error';
+                
+            } else {
+            
+                $result = Player::where(['players.id' => $request->id])
+                ->join('tournaments', 'players.tournament_id', '=', 'tournaments.id')
+                ->where(['tournaments.user_id' => $user->id])
+                ->delete();
+                
+                if ($result > 0) {
+                    $response['status'] = 'success';
+                    $response['details'] = $tournament->getDetails();
+                } else {
+                    $response['status'] = 'error';
+                }
             }
             
         }
