@@ -27,6 +27,7 @@ Route::get('/tournament/fetchAll', 'TournamentController@fetchAll');
 // for players
 Route::post('/player/add', 'PlayerController@add');
 Route::post('/player/delete', 'PlayerController@delete');
+Route::post('/player/order', 'PlayerController@order');
 
 // lang
 Route::get('/lang/change/{lang}', 'LangController@change')

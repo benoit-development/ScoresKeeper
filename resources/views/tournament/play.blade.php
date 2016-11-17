@@ -63,6 +63,11 @@
             <?php echo Form::open(['id' => 'deletePlayerForm']); ?>
         	<?php echo Form::hidden('id', null, ['id' => 'deletePlayerForm_id']); ?>
             <?php echo Form::close(); ?>  
+            
+            <!-- Form for players order -->
+            <?php echo Form::open(['id' => 'orderPlayerForm']); ?>
+        	<?php echo Form::hidden('tournament_id', $tournament->id); ?>
+            <?php echo Form::close(); ?>  
       
             
         </div>
@@ -130,7 +135,35 @@ $(document).ready(function() {
 	$("#tableScores tbody").sortable({
 	    helper: fixWidthHelper,
 	    handle: '.handle',
-	    items: 'tr:not(.no-handle)'
+	    items: 'tr:not(.no-handle)',
+	    update: function(event, ui) {
+
+		    // new players order
+		    var data = $("#orderPlayerForm").serializeArray();
+		    $("#tableScores tbody tr").each(function(index, value) {
+			    data.push({name:'order[' + index + ']', value: $(value).attr("playerId")});
+		    });
+
+		    // ajax call to update order
+		    
+			console.debug(data);
+		    
+		    $.ajax({
+		        type: "POST",
+		        url: "{{ url('player/order') }}",
+		        dataType : 'json',
+		        data: data,
+		        success: function(json) {
+		            // success
+		    		$("#alertErrorTournamentUpdate").addClass("hidden");
+		        },
+		        error: function(xhr, ajaxOptions, thrownError) {
+		            // error occured
+		        	$("#alertErrorTournamentUpdate").removeClass("hidden");
+		        }
+		    });
+		    
+	    }
 	}).disableSelection();
 
 	
@@ -200,6 +233,7 @@ function refreshScores() {
 		var playerName = this.name;
 		
 		var row = $('<tr>')
+			.attr('playerId', this.id)
 			.append($('<td>').attr('class', 'handle').append($('<i>').attr('class', 'fa fa-arrows-v')))
 			.append($('<td>')
 				.text(this.name)

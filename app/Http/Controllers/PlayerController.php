@@ -141,4 +141,31 @@ class PlayerController extends Controller
         return response()->json($response);
         
     }
+    
+    /**
+     * Order players of a tournament
+     * 
+     * @param Request $request
+     */
+    public function order(Request $request) {
+
+        // error messages
+        $response = [];
+        
+        // validate data format
+        $validator = Validator::make($request->all(), [
+            'tournament_id' => 'required|integer',
+            'order' => 'required|numeric_array',
+        ]);
+        
+        if ($validator->fails()) {
+            Log::debug("error while adding player : \nInputs : " . print_r($validator->getData(), true) . "\nErrors : " . print_r($validator->errors(), true));
+            $response['errors'] = $validator->errors();
+            $response['status'] = 'error';
+        } else {
+            
+        }
+        
+        return response()->json($response);
+    }
 }
