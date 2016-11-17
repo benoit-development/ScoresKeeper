@@ -65,4 +65,13 @@ class Tournament extends Model
                 ->where('tournament_id', $this->id)->get(),
         ];
     }
+    
+    /**
+     * get the max order the the players in this tournament
+     * 
+     * @return int
+     */
+    public function getPlayersMaxOrder() {
+        return Player::where(['tournament_id' => $this->id])->max('order');
+    }
 }

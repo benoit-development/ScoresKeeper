@@ -63,11 +63,15 @@ class PlayerController extends Controller
                 $response['status'] = 'error';
                 
             } else {
+                
+                // get current max order
+                $currentMax = $tournament->getPlayersMaxOrder();
             
                 // add player into database
                 $player = new Player();
                 $player->tournament_id = Input::get('tournament_id');
                 $player->name = Input::get('name');
+                $player->order = $currentMax + 1;
                 $player->save();
 
                 Log::debug("new player inserted");
