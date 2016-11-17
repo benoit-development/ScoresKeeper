@@ -57,7 +57,17 @@
                     	<td></td>
                 	</tr>
                 </tfoot>  
-            </table>   
+            </table> 
+            
+            <!-- Form for player deletion -->
+            <?php echo Form::open(['id' => 'deletePlayerForm']); ?>
+        	<?php echo Form::hidden('id', null, ['id' => 'deletePlayerForm_id']); ?>
+            <?php echo Form::close(); ?>  
+            
+            <!-- Form for players order -->
+            <?php echo Form::open(['id' => 'orderPlayerForm']); ?>
+        	<?php echo Form::hidden('tournament_id', $tournament->id); ?>
+            <?php echo Form::close(); ?>  
       
             
         </div>
@@ -93,7 +103,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">@lang('player.player_deleted')</h4>
+        <h4 class="modal-title">@lang('player.deleting_player')</h4>
       </div>
       <div class="modal-body">
         <p>&nbsp;</p>
@@ -125,7 +135,35 @@ $(document).ready(function() {
 	$("#tableScores tbody").sortable({
 	    helper: fixWidthHelper,
 	    handle: '.handle',
-	    items: 'tr:not(.no-handle)'
+	    items: 'tr:not(.no-handle)',
+	    update: function(event, ui) {
+
+		    // new players order
+		    var data = $("#orderPlayerForm").serializeArray();
+		    $("#tableScores tbody tr").each(function(index, value) {
+			    data.push({name:'order[' + index + ']', value: $(value).attr("playerId")});
+		    });
+
+		    // ajax call to update order
+		    
+			console.debug(data);
+		    
+		    $.ajax({
+		        type: "POST",
+		        url: "{{ url('player/order') }}",
+		        dataType : 'json',
+		        data: data,
+		        success: function(json) {
+		            // success
+		    		$("#alertErrorTournamentUpdate").addClass("hidden");
+		        },
+		        error: function(xhr, ajaxOptions, thrownError) {
+		            // error occured
+		        	$("#alertErrorTournamentUpdate").removeClass("hidden");
+		        }
+		    });
+		    
+	    }
 	}).disableSelection();
 
 	
@@ -160,7 +198,7 @@ function addPlayer() {
 
     $.ajax({
         type: "POST",
-        url: "{{ url('tournament/addPlayer') }}",
+        url: "{{ url('player/add') }}",
         dataType : 'json',
         data: $("#newPlayerForm").serialize(),
         success: function(json) {
@@ -195,6 +233,7 @@ function refreshScores() {
 		var playerName = this.name;
 		
 		var row = $('<tr>')
+			.attr('playerId', this.id)
 			.append($('<td>').attr('class', 'handle').append($('<i>').attr('class', 'fa fa-arrows-v')))
 			.append($('<td>')
 				.text(this.name)
@@ -224,27 +263,29 @@ function refreshScores() {
  * @param playerName 
  */
 function showDeleteModal(playerId, playerName) {
+
+	$('#deletePlayerForm_id').val(playerId);
+	
 	$("#modal-delete .modal-title").text(playerName);
 
 	$("#modal-delete-button").off("click");
 	$("#modal-delete-button").on( "click", function() {
 		$.ajax({
-            type: "GET",
+            type: "POST",
             url: "{{ url('player/delete') }}",
-            data: {id : playerId},
+            data: $('#deletePlayerForm').serialize(),
             dataType : 'json',
             success: function(json) {
-                if (json == 'success') {
-                    updateTournamentList();
-                    $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_success')");
+                if (json.status == 'success') {
+                    details = json.details;
+                	refreshScores();
                 } else {
-                    $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_error')");
+                    $("#modal-delete-result .modal-body").text("@lang('player.deletion_error')");
+                    $("#modal-delete-result").modal();
                 }
             },
             error: function(json) {
-                $("#modal-delete-result .modal-body").text("@lang('tournament.deletion_error')");
-            },
-            complete: function(json) {
+                $("#modal-delete-result .modal-body").text("@lang('player.deletion_error')");
                 $("#modal-delete-result").modal();
             }
 		});

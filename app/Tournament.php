@@ -36,6 +36,22 @@ class Tournament extends Model
     public static function getPaginatedList() {
         return self::orderBy('created_at', 'desc')->where(['user_id' => Auth::user()->id, 'archived' => false])->paginate(10);
     }
+
+
+    /**
+     * find a tournament in the database. This function check if :
+     * - the tournament is not archived
+     * - the user is the owner of this tournament
+     * 
+     * method return null if tournament is not found
+     * 
+     * @param int $id tournament id
+     * 
+     * return Tournament
+     */
+    public static function find($id) {
+        
+    }
     
     /**
      * Get all useful informations of this tournament like players, scrores, ...
@@ -48,5 +64,14 @@ class Tournament extends Model
                 ->select('id', 'name', 'tournament_id', 'order')
                 ->where('tournament_id', $this->id)->get(),
         ];
+    }
+    
+    /**
+     * get the max order the the players in this tournament
+     * 
+     * @return int
+     */
+    public function getPlayersMaxOrder() {
+        return Player::where(['tournament_id' => $this->id])->max('order');
     }
 }

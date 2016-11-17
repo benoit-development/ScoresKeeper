@@ -119,7 +119,7 @@ class TournamentController extends Controller
     
     
     /**
-     * Tournment archive for ajax call (json response)
+     * Tournament archive for ajax call (json response)
      * 
      * @param Request $request
      */
@@ -144,58 +144,5 @@ class TournamentController extends Controller
             
         }
         
-    }
-    
-    
-    /**
-     * Add a player to a tournament for ajax call (json response)
-     * Updated details of the tournament is returned in response
-     * 
-     * @param Request $request
-     */
-    public function addPlayer(Request $request) {
-
-        // error messages
-        $response = [];
-        
-        // validate data format
-        $validator = Validator::make($request->all(), [
-            'tournament_id' => 'required|integer',
-            'name' => 'required|max:255',
-        ]);
-        
-        if ($validator->fails()) {
-            Log::debug("error while adding player : \nInputs : " . print_r($validator->getData(), true) . "\nErrors : " . print_r($validator->errors(), true));
-            $response['errors'] = $validator->errors();
-            $response['status'] = 'error';
-        } else {
-            
-            // validate tournament id
-            $user = Auth::user();
-            $tournament = Tournament::where(['id' => $request->tournament_id, 'user_id' => $user->id, 'archived' => false])->first();
-            if (!($tournament instanceof Tournament)) {
-                
-                // user can't add player in this tournament (doesn't exists or doesn't own it)
-                Log::debug("error wrong tournament id");
-                $response['errors'] = 'wrong tournament id';
-                $response['status'] = 'error';
-                
-            } else {
-            
-                // add player into database
-                $player = new Player();
-                $player->tournament_id = Input::get('tournament_id');
-                $player->name = Input::get('name');
-                $player->save();
-
-                Log::debug("new player inserted");
-                $response['status'] = 'success';
-                $response['details'] = $tournament->getDetails();
-                
-            }
-        }
-
-        // return response
-        return response()->json($response);
     }
 }
