@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use App;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,20 +15,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // validator for numeric array
-        Validator::extend('numeric_array', function($attribute, $values, $parameters)
-        {
-            if(! is_array($values)) {
-                return false;
-            }
-        
-            foreach($values as $v) {
-                if(! is_numeric($v)) {
-                    return false;
-                }
-            }
-        
-            return true;
-        });
+        Validator::extend('numeric_array', 'App\Validators\NumericArray@validate');
+        Validator::extend('own_player_list', 'App\Validators\OwnPlayerList@validate');
+        Validator::extend('player_list_same_tournament', 'App\Validators\PlayerListSameTournament@validate');
     }
 
     /**

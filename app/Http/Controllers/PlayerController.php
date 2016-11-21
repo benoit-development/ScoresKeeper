@@ -154,8 +154,7 @@ class PlayerController extends Controller
         
         // validate data format
         $validator = Validator::make($request->all(), [
-            'tournament_id' => 'required|integer',
-            'order' => 'required|numeric_array',
+            'order' => 'required|numeric_array|own_player_list|player_list_same_tournament',
         ]);
         
         if ($validator->fails()) {
@@ -163,7 +162,12 @@ class PlayerController extends Controller
             $response['errors'] = $validator->errors();
             $response['status'] = 'error';
         } else {
-            
+            if (Player::changeOrder($request->get('order'))) {
+                $response['status'] = 'success';
+            } else {
+                $response['errors'] = ['error_updating order'];
+                $response['status'] = 'error';
+            }
         }
         
         return response()->json($response);
