@@ -66,7 +66,6 @@
             
             <!-- Form for players order -->
             <?php echo Form::open(['id' => 'orderPlayerForm']); ?>
-        	<?php echo Form::hidden('tournament_id', $tournament->id); ?>
             <?php echo Form::close(); ?>  
       
             
