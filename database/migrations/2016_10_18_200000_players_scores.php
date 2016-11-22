@@ -14,8 +14,9 @@ class PlayersScores extends Migration
     {
         Schema::create('players', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('tournament_id');
+            $table->foreign('tournament_id')->references('id')->on('tournaments');
+            $table->tinyInteger('order')->default(0);
             $table->string('name', 255);
             $table->timestamps();
         });
