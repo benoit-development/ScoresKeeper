@@ -30,8 +30,7 @@ class PlayerListSameTournament {
             return false;
         }
         
-        // check if user own players
-        $userId = Auth::user()->id;
+        // get players data
         $nb = Player::whereIn('players.id', $values)
         ->distinct()
         ->count(DB::raw('players.tournament_id'));

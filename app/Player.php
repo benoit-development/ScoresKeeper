@@ -17,7 +17,7 @@ class Player extends Model {
         DB::beginTransaction ();
         foreach ( $order as $id ) {
             
-            $result = Player::where ( 'players.id', '=', $id )->update ( [ 
+            $result = Player::where( 'players.id', '=', $id )->update ( [ 
                 'order' => $i 
             ] );
             
