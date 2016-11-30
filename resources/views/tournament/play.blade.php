@@ -242,7 +242,7 @@ function refreshScores() {
     				)
     				.append($('<ul>').attr('class', 'dropdown-menu').attr('aria-labelledby', 'menuPlayer_' + this.id)
 	    				.append($('<li>')
-    						.append($('<a>').attr('href', '#').click(function(){ showDeleteModal(playerId, playerName); }).append($('<i>').attr('class', 'fa fa-trash')).append(' @lang('player.delete')'))
+    						.append($('<a>').attr('href', '#').click(function(){ showDeleteModal(playerId, playerName); }).append($('<i>').attr('class', 'fa fa-trash fa-fw')).append(' @lang('player.delete')'))
 	    				)
     				)
 				)

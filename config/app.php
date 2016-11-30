@@ -174,6 +174,8 @@ return [
         
         Collective\Html\HtmlServiceProvider::class,
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
+        
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
     ],
 
@@ -225,6 +227,8 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
+        
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
     ],
 

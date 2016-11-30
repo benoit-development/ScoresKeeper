@@ -61,6 +61,23 @@
                         </div>
                     </form>
                 </div>
+                <div class="panel-heading">Or use social Login</div>
+                <div class="panel-body">
+                	<div class="row text-center">
+                        <a href="{{ url('/redirect/facebook') }}" class="btn btn-primary">
+                        	<i class="fa fa-facebook-official fa-fw"></i> 
+                        	Facebook
+                    	</a>
+                        <a href="{{ url('/redirect/twitter') }}" class="btn btn-info">
+                        	<i class="fa fa-twitter fa-fw"></i> 
+                        	Twitter
+                    	</a>
+                        <a href="{{ url('/redirect/google') }}" class="btn btn-danger">
+                        	<i class="fa fa-google fa-fw"></i> 
+                        	Google
+                    	</a>
+					</div>
+                </div>
             </div>
         </div>
     </div>

@@ -11,7 +11,10 @@
 |
 */
 
+// Authentication
 Route::auth();
+Route::get('/redirect/{provider}', 'SocialAuthController@redirect');
+Route::get('/callback/{provider}', 'SocialAuthController@callback');
 
 // home
 Route::get('/', ['uses' => 'HomeController@index', 'as' => 'welcome']);
