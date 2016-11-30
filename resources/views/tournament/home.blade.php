@@ -55,7 +55,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-6">
                         <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-trophy"></i> @lang('tournament.begin')
+                            <i class="fa fa-trophy fa-fw"></i> @lang('tournament.begin')
                         </button>
                     </div>
                 </div>
@@ -396,7 +396,7 @@ function updateTournamentList(page) {
                                 .attr('href', '{!! addslashes(url('tournament/play/')) !!}/' + data.id)
                                 .attr('class', 'btn btn-primary')
                                 .attr('type', 'button')
-                                .append($('<i>').attr('class', 'fa fa-play'))
+                                .append($('<i>').attr('class', 'fa fa-play fa-fw'))
                             	.append(' @lang('tournament.play')')
                             )
                         ).append($('<td>')
@@ -404,7 +404,7 @@ function updateTournamentList(page) {
                                 .click(function () {showArchiveModal(data.id, data.label)})
                                 .attr('class', 'btn btn-danger')
                                 .attr('type', 'button')
-                                .append($('<i>').attr('class', 'fa fa-hdd-o'))
+                                .append($('<i>').attr('class', 'fa fa-hdd-o fa-fw'))
                                 .append(' @lang('tournament.archive')')
                             )       
                         )
