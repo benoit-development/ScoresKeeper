@@ -18,6 +18,7 @@ return [
     'logout' => 'Logout',
     'login' => 'Login',
     'register' => 'Register',
+    'register_form' => 'Register Form',
     'email_address' => 'E-Mail Address',
     'password' => 'Password',
     'remember_me' => 'Remember me',
@@ -26,5 +27,6 @@ return [
     'confirm_password' => 'Confirm Password',
     'send_password_reset_link' => 'Send Password Reset Link',
     'reset_password' => 'Reset Password'
-
+    'click_here_to_reset_password' => 'Click here to reset your password',
+    
 ];

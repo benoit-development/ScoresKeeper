@@ -18,6 +18,7 @@ return [
     'logout' => 'Déconnexion',
     'login' => 'Connexion',
     'register' => 'Inscription',
+    'register_form' => 'Formulaire d\'Inscription',
     'email_address' => 'Addresse E-mail',
     'password' => 'Mot de passe',
     'remember_me' => 'Conserver mes informations sur cet ordinateur',
@@ -26,5 +27,6 @@ return [
     'confirm_password' => 'Confirmation du mot de passe',
     'send_password_reset_link' => 'Envoyer l\'e-mail pour réinitialiser le mot de passe',
     'reset_password' => 'Réinitialisation du mot de passe'
+    'click_here_to_reset_password' => 'Cliquez ici pour réinitialiser votre mot de passe',
 
 ];
